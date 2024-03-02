@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Container, Row, Tab, Tabs } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
+import MenuItem from "./MenuItem"
 
 export default function Menu() {
   const commonTable = useSelector((state) => state.commonTable)
@@ -30,7 +31,7 @@ export default function Menu() {
           <div className="album py-5 ">
             <Container>
               <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                {/* <Menu category={0} id={id} setId={setId} /> */}
+                <MenuItem category={0} id={id} setId={setId} />
               </Row>
             </Container>
           </div>
@@ -40,7 +41,7 @@ export default function Menu() {
             <div className="album py-5">
               <Container>
                 <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                  <Menu category={item.code_id} id={id} setId={setId} />
+                  <MenuItem category={item.code_id} id={id} setId={setId} />
                 </Row>
               </Container>
             </div>
