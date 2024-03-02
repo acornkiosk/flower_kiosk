@@ -1,14 +1,38 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+import { Provider } from 'react-redux';
+import { legacy_createStore as createStore } from 'redux';
 import App from './App';
+import './index.css';
+import 'bootstrap/dist/css/bootstrap.css'
 import reportWebVitals from './reportWebVitals';
+
+const initialstate = {
+  isLogin: false,
+  kiosk: 0
+}
+
+const reducer = (state = initialstate, action) => {
+  let newState
+  if (action.type === "SET_KIOSK") {
+    newState = {
+      ...state,
+      kiosk: action.payload
+    }
+  } else {
+    newState = state
+  }
+  return newState
+}
+const store = createStore(reducer)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
