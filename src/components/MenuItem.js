@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function MenuItem(props) {
   const commonTable = useSelector(state => state.commonTable)
   const orders = useSelector(state => state.orders)
+  const kioskId = useSelector(state => state.kiosk)
   const dispatch = useDispatch();
   const { category, id, setId } = props
   const [menu, setMenu] = useState([])
@@ -31,7 +32,7 @@ export default function MenuItem(props) {
     //kiosk_id는 처음 키오스크에 로그인할때 부여하기로 결정 
     const order = {
       id:id,
-      kiosk_id: 2,
+      kiosk_id: kioskId,
       menu_name: item.name,
       menu_price: item.price,
       menu_count: count,
@@ -129,7 +130,7 @@ export default function MenuItem(props) {
     <>
       {
         menu.map(item =>
-          <Card style={{ width: "23.5%" }} className="me-3">
+          <Card style={{ width: "23.5%" }} className="me-3" key={item.id}>
             <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
             <Card.Body>
               <Card.Title>{item.name}</Card.Title>
@@ -163,7 +164,7 @@ export default function MenuItem(props) {
             <h1>{selectedMenu.category} 옵션</h1>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.self.map(item =>
-                <Col>
+                <Col key={item.code_id}>
                   <Card className="me-3">
                     <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
                     <Card.Body>
@@ -180,7 +181,7 @@ export default function MenuItem(props) {
             <h1>기타 옵션</h1>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.etc.map(item =>
-                <Col>
+                <Col key={item.code_id}>
                   <Card className="me-3">
                     <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
                     <Card.Body>
@@ -199,7 +200,7 @@ export default function MenuItem(props) {
             <h1>포장 옵션</h1>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.bag.map(item =>
-                <Col>
+                <Col key={item.code_id}>
                   <Card className="me-3">
                     <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
                     <Card.Body>

@@ -31,7 +31,7 @@ export default function CartRow(props) {
     updateOrders(newOrders)
   }
   //아이템 개수 감소 기능
-  const minus = () =>{
+  const minus = () => {
     if (item.menu_count === 1) return
     const newOrders = orders.map(tmp => {
       if (tmp.id === item.id) {
@@ -44,10 +44,10 @@ export default function CartRow(props) {
   //options 이름으로 변경 기능
   const convertOptions = () => {
     let result = ""
-    let list = item.options.replace(" ","").split(",")
+    let list = item.options.replace(" ", "").split(",")
     list.forEach(option => {
       commonTable.forEach(common => {
-        if(parseInt(option) === common.code_id){
+        if (parseInt(option) === common.code_id) {
           result += common.code_name + " "
         }
       })

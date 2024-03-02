@@ -37,7 +37,7 @@ export default function Menu() {
           </div>
         </Tab>
         {category.map(item =>
-          <Tab eventKey={item.code_id} title={item.code_name}>
+          <Tab eventKey={item.code_id} title={item.code_name} key={item.code_id}>
             <div className="album py-5">
               <Container>
                 <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">

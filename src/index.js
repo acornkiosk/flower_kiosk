@@ -11,7 +11,8 @@ const initialstate = {
   commonTable: [],
   orders: [],
   isLogin: false,
-  kiosk: 0
+  kiosk: 0,
+  order_id : 0
 }
 
 const reducer = (state = initialstate, action) => {
@@ -31,7 +32,12 @@ const reducer = (state = initialstate, action) => {
       ...state,
       orders: action.payload
     }
-  } else {
+  }else if(action.type === "UPDATE_ORDER_ID") {
+    newState = {
+      ...state,
+      order_id: action.payload
+    }
+  }else {
     newState = state
   }
   return newState
@@ -41,9 +47,9 @@ const store = createStore(reducer)
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
   </Provider>
 );
 

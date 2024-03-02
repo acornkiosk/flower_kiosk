@@ -4,6 +4,7 @@ import KioskLogin from './pages/KioskLogin';
 import Main from './container/Main';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import Complete from './components/Complete';
 
 function App() {
   const dispatch = useDispatch()
@@ -16,10 +17,12 @@ function App() {
   }, [])
   //로그인을 먼저 해야함
   const [isLogin, setLogin] = useState(false)
+  const [isCompleted, setCompleted] = useState(false)
   return (
     <div>  
         {!isLogin && <KioskLogin isLogin={isLogin} setLogin={setLogin} />}
-        {isLogin && <Main/>}
+        {isLogin && !isCompleted && <Main setCompleted={setCompleted}/>}
+        {isCompleted && <Complete setCompleted={setCompleted}/>}
     </div>
   )
 }
