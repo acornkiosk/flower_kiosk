@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import reportWebVitals from './reportWebVitals';
 
 const initialstate = {
+  commonTable : [],
   isLogin: false,
   kiosk: 0
 }
@@ -19,7 +20,13 @@ const reducer = (state = initialstate, action) => {
       ...state,
       kiosk: action.payload
     }
-  } else {
+  }else if(action.type === "UPDATE_COMMON") {
+    newState = {
+      ...state,
+      commonTable : action.payload
+    }
+  }
+  else {
     newState = state
   }
   return newState
