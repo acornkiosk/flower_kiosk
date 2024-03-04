@@ -2,11 +2,34 @@ import { Button, Col, Container, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import CartRow from "./CartRow"
 import axios from "axios"
+import { useEffect } from "react"
 
 export default function Cart(props) {
   const orders = useSelector(state => state.orders)
   const {setCompleted} = props
   const dispatch = useDispatch()
+  const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
+  const connect = () =>{
+    ws.onopen = (e) => {
+      console.log("웹소켓 오픈")
+    }
+    ws.onerror = (e) => {
+      console.log(e)
+    }
+    ws.onclose = (e) => {
+      console.log("웹소켓 닫힘")
+    }
+  }
+  const send = () => {
+    ws.send("보냄")
+    ws.close()
+  }
+  useEffect(() =>{
+    connect()
+    return () =>{
+      ws.close()
+    }
+  },[])
   const pay = () => {
     axios.get("/api/order/cartId")
     .then(res => {
@@ -19,6 +42,7 @@ export default function Cart(props) {
       })
       updateDB(newList)
       setCompleted(true)
+      send()
     })
     .catch(error => console.log(error))
   }
@@ -51,7 +75,6 @@ export default function Cart(props) {
               <Col>
                 <Button className="w-100 h-100">전체<br/>삭제</Button>
               </Col>
-               
             </Row>
             <Row className="mt-2" style={{ flex: '3' }}>
               <Button size="lg" disabled className="mb-2">전체 주문 개수</Button>
