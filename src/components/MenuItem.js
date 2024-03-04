@@ -126,6 +126,20 @@ export default function MenuItem(props) {
       setCount(count + 1)
     }
   }
+
+  //메뉴의 이름과 가격을 정리해주는 함수
+  const arrangeItem = (item) => {
+    let result = ""
+    //만약에 item.code_value가 0원이면 result = item.code_name이다
+    if(item.code_value == 0){
+      result = item.code_name
+    }else{
+      result=item.code_name + " " + item.code_value + "원"
+    }
+    //그렇지 않다면 result는 아래이다.
+    
+    return result
+  }
   return (
     <>
       {
@@ -169,7 +183,7 @@ export default function MenuItem(props) {
                     <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
                     <Card.Body>
                       <Card.Title>
-                        <Form.Check inline label={item.code_name} type="radio" name="group1" value={item.code_id} onChange={(e) => { setWrap(e.target.value) }} />
+                        <Form.Check inline label={arrangeItem(item)} type="radio" name="group1" value={item.code_id} onChange={(e) => { setWrap(e.target.value) }} />
                       </Card.Title>
                     </Card.Body>
                   </Card>
@@ -186,7 +200,7 @@ export default function MenuItem(props) {
                     <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
                     <Card.Body>
                       <Card.Title>
-                        <Form.Check inline label={item.code_name} type="checkbox" checked={checked[item.code_id] || false} onChange={(e) =>
+                        <Form.Check inline label={arrangeItem(item)} type="checkbox" checked={checked[item.code_id] || false} onChange={(e) =>
                           handleChange(e, item)
                         } />
                       </Card.Title>
@@ -205,7 +219,7 @@ export default function MenuItem(props) {
                     <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
                     <Card.Body>
                       <Card.Title>
-                        <Form.Check inline label={item.code_name} name="group2" type="radio" value={item.code_id} onChange={(e) => { setBag(e.target.value) }} />
+                        <Form.Check inline label={arrangeItem(item)} name="group2" type="radio" value={item.code_id} onChange={(e) => { setBag(e.target.value) }} />
                       </Card.Title>
                     </Card.Body>
                   </Card>
