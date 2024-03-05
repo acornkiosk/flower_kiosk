@@ -7,22 +7,16 @@ import { useDispatch } from "react-redux"
 
 export default function KioskLogin(props) {
   const [num, setNum] = useState("")
-  const [list, setKiosk] = useState([])
   const [showAlert, setShowAlert] = useState(false)
   const dispatch = useDispatch()
-  //로그인페이지 입장시 
-  useEffect(()=> {
-    axios.get("/api/kiosk/list")
-    .then(res => setKiosk(res.data.list))
-    .catch(error => console.log(error))
-  },[])
-  //로그인 버튼을 누를시 실제 Db 정보와 비교 
+  //로그인 버튼을 누를시 실제 Db에 있는 값을 비교
   const login = () => {
     let id = parseInt(num)
-    list.forEach(kiosk => {
-      if(kiosk.id === id) {
+    axios.post("/api/kiosk/get",{id: id})
+    .then(res =>{
+      if(res.data.dto.id == id) {
         props.setLogin(true)
-        dispatch({type : "SET_KIOSK",payload: kiosk.id})
+        dispatch({type : "SET_KIOSK",payload: num})
       }else {
         setShowAlert(true)
       }
