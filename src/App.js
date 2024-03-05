@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import KioskLogin from './pages/KioskLogin';
-import Main from './container/Main';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import Complete from './components/Complete';
+import Main from './pages/Main';
 
 function App() {
   const dispatch = useDispatch()
