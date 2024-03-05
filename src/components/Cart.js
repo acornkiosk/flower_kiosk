@@ -9,30 +9,30 @@ export default function Cart(props) {
   const {setCompleted} = props
   const dispatch = useDispatch()
 
-  // const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
+  const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
   
-  // /** 웹소켓 연결관리 함수 */
-  // const connect = () => {
-  //   /** 연결에 성공했을 경우 동작하는 메서드 */
-  //   ws.onopen = (e) => {
-  //     console.log("키오스크 : 실시간 화면연동 시작(웹소켓)")
-  //   }
-  //   /** 연결과정에서 에러가 생겼을 때 동작하는 메서드 */
-  //   ws.onerror = (e) => {
-  //     alert("키오스크 : 화면 연동이 원활하게 이루어지지 않고 있습니다. 서버 확인이 필요합니다(웹소켓)")
-  //   }
-  //   /** 연결을 종료하고 싶을 때 동작하는 메서드 */
-  //   ws.onclose = (e) => {
-  //     console.log("키오스크 : 실시간 화면연동 종료(웹소켓)")
-  //   }
-  // }
+  /** 웹소켓 연결관리 함수 */
+  const connect = () => {
+    /** 연결에 성공했을 경우 동작하는 메서드 */
+    ws.onopen = (e) => {
+      console.log("키오스크 : 실시간 화면연동 시작(웹소켓)")
+    }
+    /** 연결과정에서 에러가 생겼을 때 동작하는 메서드 */
+    ws.onerror = (e) => {
+      alert("키오스크 : 화면 연동이 원활하게 이루어지지 않고 있습니다. 서버 확인이 필요합니다(웹소켓)")
+    }
+    /** 연결을 종료하고 싶을 때 동작하는 메서드 */
+    ws.onclose = (e) => {
+      console.log("키오스크 : 실시간 화면연동 종료(웹소켓)")
+    }
+  }
   
-  // const send = () => {
-  //   ws.send("보냄")
-  // }
+  const send = () => {
+    ws.send("보냄")
+  }
   useEffect(() =>{
     /** 처음 주문 창에 들어오게되면 웹소켓에 연결을 시켜준다 */
-    // connect()
+    connect()
   },[])
 
   const pay = () => {
@@ -48,7 +48,7 @@ export default function Cart(props) {
       })
       /** 서버로 주문정보 전송 */
       updateDB(newList)
-      /** 관리자 클라이어언트로부터 주문이 완료되었다는 소식이 오는 순간 나오는 알림 메시지 : Complete  */
+      /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
       setCompleted(true)
     })
     .catch(error => console.log(error))
@@ -59,6 +59,7 @@ export default function Cart(props) {
       axios.post("/api/order", item)
       .then(res => {
         console.log(res.data)
+        send()
       })
       .catch(erorr => console.log(erorr))
     })

@@ -96,8 +96,9 @@ export default function MenuItem(props) {
     return result;
   };
 
-  // 공통 option 설정
   useEffect(() => {
+
+    /** 공통 option 설정 */ 
     const etcList = [];
     const bagList = [];
     for (let item of commonTable) {
@@ -115,12 +116,12 @@ export default function MenuItem(props) {
     setBag(2019); // 기본값으로 2019 설정
   }, []);
 
-  // 카테고리에 맞는 menu를 출력
+   /** 카테고리에 맞는 menu를 출력 */
   useEffect(() => {
     axios
-      .post("/api/menu/list", { category_id: category })
-      .then(res => setMenu(res.data.list))
-      .catch(error => console.log(error));
+    .post("/api/menu/list", { category_id: category })
+    .then(res => setMenu(res.data.list))
+    .catch(error => console.log(error));
   }, []);
 
   // 개수 빼기 함수
