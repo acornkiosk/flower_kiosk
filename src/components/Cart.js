@@ -8,53 +8,63 @@ export default function Cart(props) {
   const orders = useSelector(state => state.orders)
   const {setCompleted} = props
   const dispatch = useDispatch()
+
   const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
-  const connect = () =>{
+  
+  /** 웹소켓 연결관리 함수 */
+  const connect = () => {
+    /** 연결에 성공했을 경우 동작하는 메서드 */
     ws.onopen = (e) => {
-      console.log("웹소켓 오픈")
+      console.log("키오스크 : 실시간 화면연동 시작(웹소켓)")
     }
+    /** 연결과정에서 에러가 생겼을 때 동작하는 메서드 */
     ws.onerror = (e) => {
-      console.log(e)
+      alert("키오스크 : 화면 연동이 원활하게 이루어지지 않고 있습니다. 서버 확인이 필요합니다(웹소켓)")
     }
+    /** 연결을 종료하고 싶을 때 동작하는 메서드 */
     ws.onclose = (e) => {
-      console.log("웹소켓 닫힘")
+      console.log("키오스크 : 실시간 화면연동 종료(웹소켓)")
     }
   }
+  
   const send = () => {
     ws.send("보냄")
-    ws.close()
   }
   useEffect(() =>{
+    /** 처음 주문 창에 들어오게되면 웹소켓에 연결을 시켜준다 */
     connect()
-    return () =>{
-      ws.close()
-    }
   },[])
+
   const pay = () => {
     axios.get("/api/order/cartId")
     .then(res => {
-      //주문 번호
+      /** 주문 번호 : 서버에서 시퀀스 cart 번호를 가져온다. */ 
       const order_id = res.data.dto.order_id
       dispatch({type: "UPDATE_ORDER_ID", payload: order_id})
+      /** MenuItem 에서 처리한 orders(order type list) 안에 'order_id' 값을 넣는 작업 */
       const newList = orders.map(item => {
         item.order_id = order_id
         return item
       })
+      /** 서버로 주문정보 전송 */
       updateDB(newList)
+      /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
       setCompleted(true)
-      send()
     })
     .catch(error => console.log(error))
   }
+
   const updateDB = (list) => {
     list.forEach(item =>{
       axios.post("/api/order", item)
       .then(res => {
         console.log(res.data)
+        send()
       })
       .catch(erorr => console.log(erorr))
     })
   }
+
   return (
     <>
       <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight:'400px'}}>
