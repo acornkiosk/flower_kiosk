@@ -10,13 +10,13 @@ export default function Cart(props) {
   const dispatch = useDispatch()
   const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
   const connect = () =>{
-    ws.onopen = (e) => {
+    ws.onopen = () => {
       console.log("웹소켓 오픈")
     }
     ws.onerror = (e) => {
       console.log(e)
     }
-    ws.onclose = (e) => {
+    ws.onclose = () => {
       console.log("웹소켓 닫힘")
     }
   }
@@ -26,9 +26,6 @@ export default function Cart(props) {
   }
   useEffect(() =>{
     connect()
-    return () =>{
-      ws.close()
-    }
   },[])
   const pay = () => {
     axios.get("/api/order/cartId")
