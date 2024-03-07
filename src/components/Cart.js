@@ -39,7 +39,8 @@ export default function Cart(props) {
 
     /** 리팩토링 대상 코드입니다.
      * 현재 코드 : 단순히 연습코드를 통해 인지를 위한 신호용도로 사용중, flower_front 에서 받으면 refresh 함수를 실행하여 api 로 요청중
-     * 예정 : 서버로부터 이곳에 "/api/order/list" 을 요청하고 list 로 담은 다음에 ws.send() 할수로 보내보도록 하자. */
+     * 예정1 : 서버로부터 이곳에 "/api/order/list" 을 요청하고 list 로 담은 다음에 ws.send() 할수로 보내보도록 하자. 
+     * 예정2 : dto 로 하나씩 보내고 flower_front 측에서 store 를 이용해서 주문관리 데이터를 관리하자. */
   }
 
   useEffect(() =>{
