@@ -26,7 +26,8 @@ export default function MenuItem(props) {
   });
   // 메뉴 개수 state
   const [count, setCount] = useState(1);
-
+  // 이미지 리시트
+  const [imgList, setImgList] = useState([])
   // 장바구니 추가
   const addCart = (item, options) => {
     const order = {
@@ -57,10 +58,10 @@ export default function MenuItem(props) {
   };
 
   // 상세 모달 열릴시
-  const openModal = (item) => {
+  const openModal = (item, index) => {
     const list = [];
-
-    setSelectedMenu(item);
+    let newItem = {...item,index:index}
+    setSelectedMenu(newItem);
 
     for (let tmp of commonTable) {
       if (tmp.p_code_id === item.category_id) {
@@ -97,8 +98,14 @@ export default function MenuItem(props) {
   };
 
   useEffect(() => {
-
-    /** 공통 option 설정 */ 
+    /** 카테고리에 맞는 menu를 출력 */
+    axios.post("/api/menu/list", { category_id: category })
+      .then(res => {
+        res.data.list.forEach(item => getMenuImage(item.img_name))
+        setMenu(res.data.list)
+      })
+      .catch(error => console.log(error));
+    /** 공통 option 설정 */
     const etcList = [];
     const bagList = [];
     for (let item of commonTable) {
@@ -114,14 +121,6 @@ export default function MenuItem(props) {
 
     // 포장 옵션 초기값 설정
     setBag(2019); // 기본값으로 2019 설정
-  }, []);
-
-   /** 카테고리에 맞는 menu를 출력 */
-  useEffect(() => {
-    axios
-    .post("/api/menu/list", { category_id: category })
-    .then(res => setMenu(res.data.list))
-    .catch(error => console.log(error));
   }, []);
 
   // 개수 빼기 함수
@@ -151,16 +150,29 @@ export default function MenuItem(props) {
     return result;
   };
 
+  // 서버에서 이미지 가져오기
+  const getMenuImage = (img_name) => {
+    axios.post("/upload/images", { name: img_name },
+      { responseType: 'blob' })
+      .then(res => {
+        const reader = new FileReader()
+        reader.readAsDataURL(res.data)
+        reader.onload = (e) => {
+          setImgList(prevList => [...prevList, e.target.result])
+        }
+      })
+  }
+
   return (
     <>
-      {menu.map(item => (
+      {menu.map((item, index) => (
         <Card style={{ width: "23.5%" }} className="me-3" key={item.id}>
-          <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
+          <Card.Img variant="top" src={imgList[index]} style={{ width: "100%" }} className="mt-3" />
           <Card.Body>
             <Card.Title>{item.name}</Card.Title>
             <Card.Text>{item.summary}</Card.Text>
             <Card.Text>{item.price}원</Card.Text>
-            <Button variant="primary" onClick={() => openModal(item)}>
+            <Button variant="primary" onClick={() => openModal(item,index)}>
               주문하기
             </Button>
           </Card.Body>
@@ -182,7 +194,7 @@ export default function MenuItem(props) {
         <Modal.Body>
           <Row>
             <Col>
-              <Image src="/images/header.jpg" style={{ width: "100%" }} />
+              <Image src={imgList[selectedMenu.index]} style={{ width: "100%" }} />
             </Col>
             <Col>
               <h1>
@@ -193,12 +205,12 @@ export default function MenuItem(props) {
             </Col>
           </Row>
           <Row>
-            <h1>{selectedMenu.category} 옵션</h1>
+            <h1>포장지 옵션</h1>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.self.map(item => (
                 <Col key={item.code_id}>
                   <Card className="me-3">
-                    <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
+                    <Card.Img variant="top" src={"/images/" + item.code_img} style={{ width: "100%" }} />
                     <Card.Body>
                       <Card.Title>
                         <Form.Check
@@ -224,7 +236,7 @@ export default function MenuItem(props) {
               {options.etc.map(item => (
                 <Col key={item.code_id}>
                   <Card className="me-3">
-                    <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
+                    <Card.Img variant="top" src={"/images/" + item.code_img} style={{ width: "100%" }} />
                     <Card.Body>
                       <Card.Title>
                         <Form.Check
@@ -247,7 +259,7 @@ export default function MenuItem(props) {
               {options.bag.map(item => (
                 <Col key={item.code_id}>
                   <Card className="me-3">
-                    <Card.Img variant="top" src="/images/header.jpg" style={{ width: "100%" }} />
+                    <Card.Img variant="top" src={"/images/" + item.code_img} style={{ width: "100%" }} />
                     <Card.Body>
                       <Card.Title>
                         <Form.Check
