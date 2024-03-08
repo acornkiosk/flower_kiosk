@@ -6,7 +6,7 @@ import { useEffect } from "react"
 
 export default function Cart(props) {
   const orders = useSelector(state => state.orders)
-  const {setCompleted} = props
+  const { setCompleted } = props
   const dispatch = useDispatch()
 
   const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
@@ -19,11 +19,11 @@ export default function Cart(props) {
     /** 연결을 종료하고 싶을 때 동작하는 메서드 */
     ws.onclose = () => { console.log("키오스크 : 실시간 화면연동 종료(웹소켓)") }
   }
-  
+
   const send = (dto) => {
     /** 연습 : 웹소켓에 보내게 될 정보들 */
     var info = {
-      type : "ORDER_NEW",
+      type: "ORDER_NEW",
       id: dto.id,
       is_completed: dto.is_completed,
       kiosk_id: dto.kiosk_id,
@@ -42,69 +42,66 @@ export default function Cart(props) {
      * 예정 : 서버로부터 이곳에 "/api/order/list" 을 요청하고 list 로 담은 다음에 ws.send() 할수로 보내보도록 하자. */
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     /** 처음 주문 창에 들어오게되면 웹소켓에 연결을 시켜준다 */
     connect()
-  },[])
+  }, [])
 
   const pay = () => {
     axios.get("/api/order/cartId")
-    .then(res => {
-      /** 주문 번호 : 서버에서 시퀀스 cart 번호를 가져온다. */ 
-      const order_id = res.data.dto.order_id
-      dispatch({type: "UPDATE_ORDER_ID", payload: order_id})
-      /** MenuItem 에서 처리한 orders(order type list) 안에 'order_id' 값을 넣는 작업 */
-      const newList = orders.map(item => {
-        item.order_id = order_id
-        return item
+      .then(res => {
+        /** 주문 번호 : 서버에서 시퀀스 cart 번호를 가져온다. */
+        const order_id = res.data.dto.order_id
+        dispatch({ type: "UPDATE_ORDER_ID", payload: order_id })
+        /** MenuItem 에서 처리한 orders(order type list) 안에 'order_id' 값을 넣는 작업 */
+        const newList = orders.map(item => {
+          item.order_id = order_id
+          return item
+        })
+        /** 서버로 주문정보 전송 */
+        updateDB(newList)
+        /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
+        setCompleted(true)
       })
-      /** 서버로 주문정보 전송 */
-      updateDB(newList)
-      /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
-      setCompleted(true)
-    })
-    .catch(error => console.log(error))
+      .catch(error => console.log(error))
   }
 
   const updateDB = (list) => {
-    list.forEach(item =>{
+    list.forEach(item => {
       axios.post("/api/order", item)
-      .then(res => {
-        console.log("주문하기 결과 : "+res.data.status)
-        console.log(res.data)
-        /** 웹소켓 전송 시작시점 */
-        send(res.data.dto)
-      })
-      .catch(erorr => console.log(erorr))
+        .then(res => {
+          console.log("주문하기 결과 : " + res.data.status)
+          console.log(res.data)
+          /** 웹소켓 전송 시작시점 */
+          send(res.data.dto)
+        })
+        .catch(erorr => console.log(erorr))
     })
   }
 
   return (
     <>
-      <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight:'400px'}}>
+      <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight: '400px' }}>
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>
-            {orders.map(item => 
+            {orders.map(item =>
               <div key={item.id}>
-                <CartRow item={item}/>  
+                <CartRow item={item} />
               </div>
             )}
           </Col>
-          <Col md={4} className="mb-2 d-flex flex-column" style={{height:'350px'}}>
+          <Col md={4} className="mb-2 d-flex flex-column" style={{ height: '350px' }}>
             <Row className="mt-2" style={{ flex: '2' }}>
-              <Col className="text-center">
-                <h3>남은시간</h3>
-                <h1 className="text-danger">120초</h1>
-              </Col>
               <Col>
-                <Button className="w-100 h-100">전체<br/>삭제</Button>
+                <Button className="w-100 h-100">전체<br />삭제</Button>
               </Col>
             </Row>
-            <Row className="mt-2" style={{ flex: '3' }}>
-              <Button size="lg" disabled className="mb-2">전체 주문 개수</Button>
+            <Row className="mt-2" style={{ flex: '2' }}>
+              <Col><h3 className="text-center">선택한 상품</h3></Col>
+              <Col><h3><span style={{ color: "red" }}>6</span>개</h3></Col>
             </Row>
             <Row style={{ flex: '5' }}>
-             <Button size="lg" onClick={pay} disabled={orders.length === 0}>결제하기</Button>
+              <Button size="lg" onClick={pay} disabled={orders.length === 0}>결제하기</Button>
             </Row>
           </Col>
         </Row>
