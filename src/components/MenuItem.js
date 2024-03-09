@@ -57,10 +57,9 @@ export default function MenuItem(props) {
   };
 
   // 상세 모달 열릴시
-  const openModal = (item, index) => {
+  const openModal = (item) => {
     const list = [];
-    let newItem = { ...item, index: index }
-    setSelectedMenu(newItem);
+    setSelectedMenu(item);
 
     for (let tmp of commonTable) {
       if (tmp.p_code_id === item.category_id) {
@@ -158,14 +157,21 @@ export default function MenuItem(props) {
 
   return (
     <>
-      {menu.map((item, index) => (
+      {menu.map(item => (
         <Card style={{ width: "23.5%" }} className="me-3" key={item.id}>
-          <Card.Img variant="top" src={imgList[item.img_name]} style={{ width: "100%" }} className="mt-3" />
+          <div className="position-relative">
+            {item.is_sold === "true" &&
+              <div className="position-absolute">
+                <Card.Img variant="top" src="images/sold_out.png" style={{ width: "100%" }} className="mt-3" />
+              </div>
+            }
+            <Card.Img variant="top" src={imgList[item.img_name]} style={{ width: "100%" }} className="mt-3" />
+          </div>
           <Card.Body>
             <Card.Title>{item.name}</Card.Title>
             <Card.Text>{item.summary}</Card.Text>
             <Card.Text>{item.price}원</Card.Text>
-            <Button variant="primary" onClick={() => openModal(item, index)}>
+            <Button variant="primary" onClick={() => openModal(item)} disabled={item.is_sold === "true"}>
               주문하기
             </Button>
           </Card.Body>
@@ -187,7 +193,7 @@ export default function MenuItem(props) {
         <Modal.Body>
           <Row>
             <Col>
-              <Image src={imgList[selectedMenu.index]} style={{ width: "100%" }} />
+              <Image src={imgList[selectedMenu.img_name]} style={{ width: "100%" }} />
             </Col>
             <Col>
               <h1>

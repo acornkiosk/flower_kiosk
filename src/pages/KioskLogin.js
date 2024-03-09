@@ -14,7 +14,6 @@ export default function KioskLogin(props) {
     let id = parseInt(num)
     axios.post("/api/kiosk/get", { id: id })
       .then(res => {
-        console.log(res.data)
         if (res.data.dto.id == id) {
           props.setLogin(true)
           dispatch({ type: "SET_KIOSK", payload: num })
