@@ -9,8 +9,7 @@ export default function MenuItem(props) {
   const orders = useSelector(state => state.orders);
   const kioskId = useSelector(state => state.kiosk);
   const dispatch = useDispatch();
-  const { category, id, setId } = props;
-  const [menu, setMenu] = useState([]);
+  const { id, setId, menu } = props
   const [selectedMenu, setSelectedMenu] = useState({});
   const [showModal, setShowModal] = useState(false);
   // 기타 옵션
@@ -27,7 +26,7 @@ export default function MenuItem(props) {
   // 메뉴 개수 state
   const [count, setCount] = useState(1);
   // 이미지 리시트
-  const [imgList, setImgList] = useState([])
+  const [imgList, setImgList] = useState({})
   // 장바구니 추가
   const addCart = (item, options) => {
     const order = {
@@ -60,7 +59,7 @@ export default function MenuItem(props) {
   // 상세 모달 열릴시
   const openModal = (item, index) => {
     const list = [];
-    let newItem = {...item,index:index}
+    let newItem = { ...item, index: index }
     setSelectedMenu(newItem);
 
     for (let tmp of commonTable) {
@@ -98,13 +97,7 @@ export default function MenuItem(props) {
   };
 
   useEffect(() => {
-    /** 카테고리에 맞는 menu를 출력 */
-    axios.post("/api/menu/list", { category_id: category })
-      .then(res => {
-        res.data.list.forEach(item => getMenuImage(item.img_name))
-        setMenu(res.data.list)
-      })
-      .catch(error => console.log(error));
+    menu.forEach(item => getMenuImage(item.img_name))
     /** 공통 option 설정 */
     const etcList = [];
     const bagList = [];
@@ -158,7 +151,7 @@ export default function MenuItem(props) {
         const reader = new FileReader()
         reader.readAsDataURL(res.data)
         reader.onload = (e) => {
-          setImgList(prevList => [...prevList, e.target.result])
+          setImgList(prevImgList => ({ ...prevImgList, [img_name]: e.target.result }))
         }
       })
   }
@@ -167,12 +160,12 @@ export default function MenuItem(props) {
     <>
       {menu.map((item, index) => (
         <Card style={{ width: "23.5%" }} className="me-3" key={item.id}>
-          <Card.Img variant="top" src={imgList[index]} style={{ width: "100%" }} className="mt-3" />
+          <Card.Img variant="top" src={imgList[item.img_name]} style={{ width: "100%" }} className="mt-3" />
           <Card.Body>
             <Card.Title>{item.name}</Card.Title>
             <Card.Text>{item.summary}</Card.Text>
             <Card.Text>{item.price}원</Card.Text>
-            <Button variant="primary" onClick={() => openModal(item,index)}>
+            <Button variant="primary" onClick={() => openModal(item, index)}>
               주문하기
             </Button>
           </Card.Body>

@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Alert, Button, Col, Container, Image, Row } from "react-bootstrap"
 
 import { BackspaceFill, DashSquare, Icon0Square, Icon1Square, Icon2Square, Icon3Square, Icon4Square, Icon5Square, Icon6Square, Icon7Square, Icon8Square, Icon9Square } from "react-bootstrap-icons"
@@ -12,24 +12,24 @@ export default function KioskLogin(props) {
   //로그인 버튼을 누를시 실제 Db에 있는 값을 비교
   const login = () => {
     let id = parseInt(num)
-    axios.post("/api/kiosk/get",{id: id})
-    .then(res =>{
-      console.log(res.data)
-      if(res.data.dto.id == id) {
-        props.setLogin(true)
-        dispatch({type : "SET_KIOSK",payload: num})
-      }else {
-        setShowAlert(true)
-      }
-    })
-    .catch(() => {setShowAlert(true)})
+    axios.post("/api/kiosk/get", { id: id })
+      .then(res => {
+        console.log(res.data)
+        if (res.data.dto.id == id) {
+          props.setLogin(true)
+          dispatch({ type: "SET_KIOSK", payload: num })
+        } else {
+          setShowAlert(true)
+        }
+      })
+      .catch(() => { setShowAlert(true) })
   }
   return (
     <Container>
       <Image fluid src="/images/kiosk_header.jpg" style={{ width: '100%', maxHeight: '400px' }} />
       <Container className="d-flex flex-column align-items-center justify-content-center" style={{ height: '1200px' }}>
         <h1 className="mb-5 border-bottom text-center" style={{ minWidth: '40%' }}>{num}</h1>
-        {showAlert && <Alert className="text-center" variant="danger" style={{minWidth: '40%'}}>키오스크 아이디를 다시 입력해주세요!</Alert>}
+        {showAlert && <Alert className="text-center" variant="danger" style={{ minWidth: '40%' }}>키오스크 아이디를 다시 입력해주세요!</Alert>}
         <Button className="mb-5" size="lg" style={{ width: '40%', height: '10%' }} onClick={login}>로그인</Button>
         <KeyPad setNum={setNum} num={num} />
       </Container>

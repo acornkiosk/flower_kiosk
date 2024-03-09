@@ -1,28 +1,33 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-import KioskLogin from './pages/KioskLogin';
-import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import './App.css';
 import Complete from './components/Complete';
+import KioskLogin from './pages/KioskLogin';
 import Main from './pages/Main';
 
 function App() {
   const dispatch = useDispatch()
   useEffect(() => {
-    axios.post("/api/common/child", {code_id: 0})
-    .then(res =>{
-      dispatch({type: "UPDATE_COMMON", payload: res.data.list})
-    })
-    .catch(error => console.log(error))
+    axios.post("/api/common/child", { code_id: 0 })
+      .then(res => {
+        dispatch({ type: "UPDATE_COMMON", payload: res.data.list })
+      })
+      .catch(error => console.log(error))
+    axios.post("api/menu/list", { category_id: 0 })
+      .then(res => {
+        dispatch({ type: "GET_MENU", payload: res.data.list })
+      })
+      .catch(error => console.log(error))
   }, [])
   //로그인을 먼저 해야함
   const [isLogin, setLogin] = useState(false)
   const [isCompleted, setCompleted] = useState(false)
   return (
-    <div>  
-        {!isLogin && <KioskLogin isLogin={isLogin} setLogin={setLogin} />}
-        {isLogin && !isCompleted && <Main setCompleted={setCompleted}/>}
-        {isCompleted && <Complete setCompleted={setCompleted}/>}
+    <div>
+      {!isLogin && <KioskLogin isLogin={isLogin} setLogin={setLogin} />}
+      {isLogin && !isCompleted && <Main setCompleted={setCompleted} />}
+      {isCompleted && <Complete setCompleted={setCompleted} />}
     </div>
   )
 }

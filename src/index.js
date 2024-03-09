@@ -12,7 +12,8 @@ const initialstate = {
   orders: [],
   isLogin: false,
   kiosk: 0,
-  order_id : 0
+  order_id : 0,
+  menu: []
 }
 
 const reducer = (state = initialstate, action) => {
@@ -36,6 +37,11 @@ const reducer = (state = initialstate, action) => {
     newState = {
       ...state,
       order_id: action.payload
+    }
+  }else if(action.type === "GET_MENU") {
+    newState = {
+      ...state,
+      menu: action.payload
     }
   }else {
     newState = state
