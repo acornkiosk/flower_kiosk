@@ -9,7 +9,7 @@ export default function Cart(props) {
   const { setCompleted } = props
   const dispatch = useDispatch()
 
-  const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
+  const ws = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/order")
   /** 웹소켓 연결관리 함수 */
   const connect = () => {
     /** 연결에 성공했을 경우 동작하는 메서드 */

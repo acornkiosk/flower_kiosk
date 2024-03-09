@@ -42,5 +42,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9000/flower"
+  "proxy": "http://flower.onleave.co.kr:9000/flower"
 }
