@@ -13,7 +13,6 @@ export default function Cart(props) {
   const id = useSelector(state => state.kiosk)
   const dispatch = useDispatch()
   const [isInfo, setIsInfo] = useState(false)
-  const [wsReConnect, setWsReConnect] = useState(true)
   //키오스크 정보 axios
   function getKiosk() {
     axios.post("/api/kiosk/get", { id: id })
@@ -55,11 +54,7 @@ export default function Cart(props) {
     }
     /** 자동으로 끊겼을 것을 대비한 로직 */
     ws.close = () => {
-      if (wsReConnect) {
-        ws.onopen()
-      } else {
-        ws.onclose()
-      }
+      ws.onopen()
     }
     /** 사장님 페이지 키오스크 관리 */
     ws.onmessage = (msg) => {
@@ -101,7 +96,7 @@ export default function Cart(props) {
   }
   return (
     <>
-      {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} setWsReConnect={setWsReConnect} />}
+    {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin}/>}
       <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight: '400px' }}>
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>

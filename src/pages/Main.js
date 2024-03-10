@@ -6,13 +6,13 @@ import Menu from "../components/Menu";
 export default function Main(props) {
   /** App.js <--> Main.js <--> Cart.js */
   /** App.js <--> Main.js <--> InfoModal.js */
-  const {setCompleted, setIsInfo, setLogin, setWsReConnect} = props
+  const {setCompleted, setIsInfo, setLogin} = props
   return (
     <div>
       <HeaderImg/>
       <Menu/>
-      <Cart setCompleted={setCompleted} setLogin={setLogin} setWsReConnect={setWsReConnect}/>
-      <InfoModal setIsInfo={setIsInfo} setLogin={setLogin} setWsReConnect={setWsReConnect}/>
+      <Cart setCompleted={setCompleted} setLogin={setLogin} />
+      <InfoModal setIsInfo={setIsInfo} setLogin={setLogin} />
     </div>
   )
 }
