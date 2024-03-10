@@ -53,9 +53,7 @@ export default function Cart(props) {
       }, 5000)
     }
     /** 자동으로 끊겼을 것을 대비한 로직 */
-    ws.close = () => {
-      ws.onopen()
-    }
+    ws.close = () => { ws.onopen() }
     /** 사장님 페이지 키오스크 관리 */
     ws.onmessage = (msg) => {
       if (msg != null) {
@@ -66,6 +64,12 @@ export default function Cart(props) {
       }
     }
   }
+  /** 주문처리될 때 */
+  const send = () => {
+    var info = { type: "UPDATE_ORDERS" }
+    ws.send(JSON.stringify(info))
+  }
+  /** 컴포넌트 호출시 */
   useEffect(() => {
     connect()
   }, [])
@@ -90,7 +94,11 @@ export default function Cart(props) {
   const updateDB = (list) => {
     list.forEach(item => {
       axios.post("/api/order", item)
-        .then(res => console.log("주문하기 결과 : " + res.data.status))
+        .then(res => {
+          console.log("주문하기 결과 : " + res.data.status)
+          /** 주문정보 완전 업데이트 이후로 웹소켓 요청 */
+          send()
+        })
         .catch(erorr => console.log(erorr))
     })
   }
