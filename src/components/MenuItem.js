@@ -144,15 +144,18 @@ export default function MenuItem(props) {
 
   // 서버에서 이미지 가져오기
   const getMenuImage = (img_name) => {
-    axios.post("/upload/images", { name: img_name },
-      { responseType: 'blob' })
-      .then(res => {
-        const reader = new FileReader()
-        reader.readAsDataURL(res.data)
-        reader.onload = (e) => {
-          setImgList(prevImgList => ({ ...prevImgList, [img_name]: e.target.result }))
-        }
-      })
+    if (img_name) {
+      axios.post("/upload/images", { name: img_name },
+        { responseType: 'blob' })
+        .then(res => {
+          const reader = new FileReader()
+          reader.readAsDataURL(res.data)
+          reader.onload = (e) => {
+            setImgList(prevImgList => ({ ...prevImgList, [img_name]: e.target.result }))
+          }
+        })
+    }
+
   }
 
   return (
@@ -165,7 +168,7 @@ export default function MenuItem(props) {
                 <Card.Img variant="top" src="images/sold_out.png" style={{ width: "100%" }} className="mt-3" />
               </div>
             }
-            <Card.Img variant="top" src={imgList[item.img_name]} style={{ width: "100%" }} className="mt-3" />
+            <Card.Img variant="top" src={item.img_name ? imgList[item.img_name] : "images/no_image.png"} style={{ width: "100%" }} className="mt-3" />
           </div>
           <Card.Body>
             <Card.Title>{item.name}</Card.Title>
