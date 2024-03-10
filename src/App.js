@@ -26,7 +26,8 @@ function App() {
   return (
     <div>
       {!isLogin && <KioskLogin isLogin={isLogin} setLogin={setLogin} />}
-      {isLogin && !isCompleted && <Main setCompleted={setCompleted} />}
+      {/** 다른 컴포넌트에서 로그아웃한 이력을 가져오기 위해 isLogin과 setLogin을 넣음 */}
+      {isLogin && !isCompleted && <Main isLogin={isLogin} setLogin={setLogin} setCompleted={setCompleted} />}
       {isCompleted && <Complete setCompleted={setCompleted} />}
     </div>
   )
