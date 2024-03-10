@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux"
 import MenuItem from "./MenuItem"
 
 export default function Menu() {
+  const menu = useSelector(state => state.menu)
   const commonTable = useSelector((state) => state.commonTable)
   const [category, setCategory] = useState([])
   const dispatch = useDispatch()
@@ -23,7 +24,22 @@ export default function Menu() {
       dispatch({type:"UPDATE_ORDERS", payload: []})
     }
   }, [])
+  //메뉴 분류 
+  const categorize = (category_id) => {
+    if(category_id === 0) return menu
 
+    if(category_id === 1001) {
+      return menu.filter(item => item.category_id === 1001)
+    }
+
+    if(category_id === 1002) {
+      return menu.filter(item => item.category_id === 1002)
+    }
+
+    if(category_id === 1003) {
+      return menu.filter(item => item.category_id === 1003)
+    }
+  }
   return (
     <div>
       <Tabs defaultActiveKey="All" className="mb-3" fill>
@@ -31,7 +47,7 @@ export default function Menu() {
           <div className="album py-5 ">
             <Container>
               <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                <MenuItem category={0} id={id} setId={setId} />
+                <MenuItem id={id} setId={setId} menu={menu} />
               </Row>
             </Container>
           </div>
@@ -41,7 +57,7 @@ export default function Menu() {
             <div className="album py-5">
               <Container>
                 <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                  <MenuItem category={item.code_id} id={id} setId={setId} />
+                  <MenuItem menu={categorize(item.code_id)} id={id} setId={setId} />
                 </Row>
               </Container>
             </div>

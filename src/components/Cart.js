@@ -11,7 +11,6 @@ export default function Cart(props) {
 
 /** 웹소켓 참조값을 담을 필드 */
 let ws 
-
 /** 웹소켓 연결관리 함수 */
 const connect = () => {
   /** 웹소켓 프로토콜을 사용하여 서버 'WebSocketConfig' 연결 */
@@ -31,7 +30,6 @@ const connect = () => {
   }
   /** 사장님 키오스크 측에서 off 할 경우? */
   ws.onclose = () => {}
-
   /** 사장님 페이지 키오스크 관리 */
   ws.onmessage = (msg) => {
     if(msg != null){
@@ -60,7 +58,7 @@ useEffect(()=>{
      /** 전송 */
      ws.send(Array.isArray())
   }
-
+  
   const pay = () => {
     axios.get("/api/order/cartId")
       .then(res => {
@@ -76,8 +74,6 @@ useEffect(()=>{
         updateDB(newList)
         /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
         setCompleted(true)
-        /** 웹소켓 전송 시작시점 */
-        send(newList)
       })
       .catch(error => console.log(error))
   }
@@ -106,16 +102,13 @@ useEffect(()=>{
           </Col>
           <Col md={4} className="mb-2 d-flex flex-column" style={{ height: '350px' }}>
             <Row className="mt-2" style={{ flex: '2' }}>
-              <Col className="text-center">
-                <h3>남은시간</h3>
-                <h1 className="text-danger">120초</h1>
-              </Col>
               <Col>
                 <Button className="w-100 h-100">전체<br />삭제</Button>
               </Col>
             </Row>
-            <Row className="mt-2" style={{ flex: '3' }}>
-              <Button size="lg" disabled className="mb-2">전체 주문 개수</Button>
+            <Row className="mt-2" style={{ flex: '2' }}>
+              <Col><h3 className="text-center">선택한 상품</h3></Col>
+              <Col><h3><span style={{ color: "red" }}>6</span>개</h3></Col>
             </Row>
             <Row style={{ flex: '5' }}>
               <Button size="lg" onClick={pay} disabled={orders.length === 0}>결제하기</Button>
