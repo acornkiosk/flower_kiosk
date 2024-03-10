@@ -10,12 +10,10 @@ import reportWebVitals from './reportWebVitals';
 const initialstate = {
   commonTable: [],
   orders: [],
-  isLogin: false,
   kiosk: 0,
   order_id : 0,
   menu: []
 }
-
 const reducer = (state = initialstate, action) => {
   let newState
   if (action.type === "SET_KIOSK") {
@@ -49,7 +47,6 @@ const reducer = (state = initialstate, action) => {
   return newState
 }
 const store = createStore(reducer)
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
@@ -58,7 +55,6 @@ root.render(
     </React.StrictMode>
   </Provider>
 );
-
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

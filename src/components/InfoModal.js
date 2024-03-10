@@ -6,13 +6,11 @@ function InfoModal(props) {
     /** Cart.js 와 App.js 모두 연결 */
     const {setIsInfo} = props
     const {setLogin} = props
-    const {setWsReConnect} = props
     return (
       <Modal
         {...props} 
         show={props.show}
         setLogin={props.setLogin}
-        setWsReConnect={props.setWsReConnect}
         backdrop="static"
         keyboard={false}
       >
@@ -27,7 +25,6 @@ function InfoModal(props) {
           <Button variant="warning" onClick={() =>{
             setIsInfo(false)
             setLogin(false)
-            setWsReConnect(false)
         }}>로그아웃</Button>
         </Modal.Footer>
       </Modal>
