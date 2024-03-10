@@ -36,8 +36,10 @@ export default function Cart(props) {
                   console.log(res.data.dto.power)
                   if (res.data.dto.power === "off") {
                     setIsInfo(true)
+                    wsClose()
                   } else {
                     setIsInfo(false)
+                    wsClose()
                   }
                 })
             })
@@ -76,8 +78,10 @@ export default function Cart(props) {
                   console.log(res.data.dto.power)
                   if (res.data.dto.power === "off") {
                     setIsInfo(true)
+                    wsClose()
                   } else {
                     setIsInfo(false)
+                    wsClose()
                   }
                 })
             })
@@ -87,6 +91,8 @@ export default function Cart(props) {
       }
     }
   }
+  /** 호출해서 끄는 것과 자동으로 끊기는 것을 구분하기 위하여 별도로 구현 */
+  const wsClose = () => {ws.close()}
 
   useEffect(() => {
     connect()
