@@ -1,9 +1,9 @@
+import axios from "axios"
+import { useEffect, useState } from "react"
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import CartRow from "./CartRow"
-import axios from "axios"
-import { useEffect, useState } from "react"
-import InfoModal from "../pages/InfoModal"
+import InfoModal from "./InfoModal"
 
 export default function Cart(props) {
   /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
@@ -14,7 +14,26 @@ export default function Cart(props) {
   const dispatch = useDispatch()
   const [isInfo, setIsInfo] = useState(false)
   const [wsReConnect, setWsReConnect] = useState(true)
-
+  //키오스크 정보 axios
+  function getKiosk() {
+    axios.post("/api/kiosk/get", { id: id })
+      .then(res => {
+        /** 
+         * 수정이 필요한 구간
+         * 서버에 가져올 때 수정 이전의 값으로 가져와짐(한박자 느림)
+         * 그래서 한번 더 요청함
+         */
+        axios.post("/api/kiosk/get", { id: id })
+          .then(res => {
+            if (res.data.dto.power === "off") {
+              setIsInfo(true)
+            } else {
+              setIsInfo(false)
+            }
+          })
+      })
+      .catch(error => console.log(error))
+  }
   /** 웹소켓 참조값을 담을 필드 */
   let ws
   /** 웹소켓 연결관리 함수 */
@@ -24,23 +43,7 @@ export default function Cart(props) {
     /** 연결에 성공했을 경우 동작하는 메서드 */
     ws.onopen = () => {
       console.log("손님 키오스크(Cart.js) : 실시간 화면연동 시작(웹소켓)")
-      axios.post("/api/kiosk/get", { id: id })
-            .then(res => {
-              /** 
-               * 수정이 필요한 구간
-               * 서버에 가져올 때 수정 이전의 값으로 가져와짐(한박자 느림)
-               * 그래서 한번 더 요청함
-               */
-              axios.post("/api/kiosk/get", { id: id })
-                .then(res => {
-                  console.log(res.data.dto.power)
-                  if (res.data.dto.power === "off") {
-                    setIsInfo(true)
-                  } else {
-                    setIsInfo(false)
-                  }
-                })
-            })
+      getKiosk()
     }
     /** 연결과정에서 에러가 생겼을 때 동작하는 메서드 */
     ws.onerror = () => {
@@ -52,9 +55,9 @@ export default function Cart(props) {
     }
     /** 자동으로 끊겼을 것을 대비한 로직 */
     ws.close = () => {
-      if(wsReConnect){
-        ws.onopen() 
-      }else{
+      if (wsReConnect) {
+        ws.onopen()
+      } else {
         ws.onclose()
       }
     }
@@ -62,36 +65,15 @@ export default function Cart(props) {
     ws.onmessage = (msg) => {
       if (msg != null) {
         var result = JSON.parse(msg.data);
-        if (result.type === "SET_KIOSK") {
-          // console.log(result.type)
-          axios.post("/api/kiosk/get", { id: id })
-            .then(res => {
-              /** 
-               * 수정이 필요한 구간
-               * 서버에 가져올 때 수정 이전의 값으로 가져와짐(한박자 느림)
-               * 그래서 한번 더 요청함
-               */
-              axios.post("/api/kiosk/get", { id: id })
-                .then(res => {
-                  console.log(res.data.dto.power)
-                  if (res.data.dto.power === "off") {
-                    setIsInfo(true)
-                  } else {
-                    setIsInfo(false)
-                  }
-                })
-            })
-        }
+        if (result.type === "SET_KIOSK") getKiosk()
       } else {
         console.log("없엉")
       }
     }
   }
-
   useEffect(() => {
     connect()
-  })
-
+  }, [])
   const pay = () => {
     axios.get("/api/order/cartId")
       .then(res => {
@@ -110,21 +92,16 @@ export default function Cart(props) {
       })
       .catch(error => console.log(error))
   }
-
   const updateDB = (list) => {
     list.forEach(item => {
       axios.post("/api/order", item)
-        .then(res => {
-          console.log("주문하기 결과 : " + res.data.status)
-          console.log(res.data)
-        })
+        .then(res => console.log("주문하기 결과 : " + res.data.status))
         .catch(erorr => console.log(erorr))
     })
   }
-
   return (
     <>
-    {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} setWsReConnect={setWsReConnect}/>}
+      {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} setWsReConnect={setWsReConnect} />}
       <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight: '400px' }}>
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>
