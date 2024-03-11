@@ -33,12 +33,12 @@ export default function Cart(props) {
       })
       .catch(error => console.log(error))
   }
-  /** 웹소켓 참조값을 담을 필드 */
-  let ws
+
+  /** 웹소켓 프로토콜을 사용하여 서버 'WebSocketConfig' 연결 */
+  const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
+
   /** 웹소켓 연결관리 함수 */
   const connect = () => {
-    /** 웹소켓 프로토콜을 사용하여 서버 'WebSocketConfig' 연결 */
-    ws = new WebSocket("ws://localhost:9000/flower/ws/order")
     /** 연결에 성공했을 경우 동작하는 메서드 */
     ws.onopen = () => {
       console.log("손님 키오스크(Cart.js) : 실시간 화면연동 시작(웹소켓)")
@@ -63,11 +63,17 @@ export default function Cart(props) {
         console.log("없엉")
       }
     }
+    return ws
   }
   /** 주문처리될 때 */
   const send = () => {
-    var info = { type: "UPDATE_ORDERS" }
-    ws.send(JSON.stringify(info))
+    if (ws != null) {
+      var info = { type: "UPDATE_ORDERS" }
+      /** object 를 String 으로 변환 */
+      ws.send(JSON.stringify(info))
+    } else {
+      console.log("ws 값 어디갔냐")
+    }
   }
   /** 컴포넌트 호출시 */
   useEffect(() => {
@@ -88,6 +94,8 @@ export default function Cart(props) {
         updateDB(newList)
         /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
         setCompleted(true)
+        /** 주문정보 완전 업데이트 이후로 웹소켓 요청 */
+        send()
       })
       .catch(error => console.log(error))
   }
@@ -96,15 +104,13 @@ export default function Cart(props) {
       axios.post("/api/order", item)
         .then(res => {
           console.log("주문하기 결과 : " + res.data.status)
-          /** 주문정보 완전 업데이트 이후로 웹소켓 요청 */
-          send()
         })
         .catch(erorr => console.log(erorr))
     })
   }
   return (
     <>
-    {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin}/>}
+      {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />}
       <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight: '400px' }}>
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>
