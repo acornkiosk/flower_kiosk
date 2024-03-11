@@ -53,7 +53,7 @@ export default function Cart(props) {
       }, 5000)
     }
     /** 자동으로 끊겼을 것을 대비한 로직 */
-    ws.close = () => { ws.onopen() }
+    ws.close = () => { connect() }
     /** 사장님 페이지 키오스크 관리 */
     ws.onmessage = (msg) => {
       if (msg != null) {
