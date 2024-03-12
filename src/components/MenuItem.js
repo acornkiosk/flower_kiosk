@@ -161,7 +161,7 @@ export default function MenuItem(props) {
   return (
     <>
       {menu.map(item => (
-        <Card style={{ width: "23.5%" }} className="me-3" key={item.id}>
+        <Card style={{ width: "23.5%" }} className="me-3" key={item.id} onClick={() => openModal(item)} disabled={item.is_sold === "true"}>
           <div className="position-relative">
             {item.is_sold === "true" &&
               <div className="position-absolute">
@@ -174,9 +174,6 @@ export default function MenuItem(props) {
             <Card.Title>{item.name}</Card.Title>
             <Card.Text>{item.summary}</Card.Text>
             <Card.Text>{item.price}원</Card.Text>
-            <Button variant="primary" onClick={() => openModal(item)} disabled={item.is_sold === "true"}>
-              주문하기
-            </Button>
           </Card.Body>
         </Card>
       ))}
