@@ -25,7 +25,7 @@ export default function KioskLogin(props) {
   }
   return (
     <Container>
-      <Image fluid src="/images/kiosk_header.jpg" style={{ width: '100%', maxHeight: '400px' }} />
+      <Image fluid src="/images/kiosk_header.png" style={{ width: '100%', maxHeight: '400px' }} />
       <Container className="d-flex flex-column align-items-center justify-content-center" style={{ height: '1200px' }}>
         <h1 className="mb-5 border-bottom text-center" style={{ minWidth: '40%' }}>{num}</h1>
         {showAlert && <Alert className="text-center" variant="danger" style={{ minWidth: '40%' }}>키오스크 아이디를 다시 입력해주세요!</Alert>}
