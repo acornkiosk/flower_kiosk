@@ -7,8 +7,7 @@ import InfoModal from "./InfoModal"
 
 export default function Cart(props) {
   /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
-  const { setLogin } = props
-  const { setCompleted } = props
+  const { setLogin, setCompleted } = props
   const orders = useSelector(state => state.orders)
   const id = useSelector(state => state.kiosk)
   const dispatch = useDispatch()
@@ -22,21 +21,16 @@ export default function Cart(props) {
          * 서버에 가져올 때 수정 이전의 값으로 가져와짐(한박자 느림)
          * 그래서 한번 더 요청함
          */
-        axios.post("/api/kiosk/get", { id: id })
-          .then(res => {
-            if (res.data.dto.power === "off") {
-              setIsInfo(true)
-            } else {
-              setIsInfo(false)
-            }
-          })
+        if (res.data.dto.power === "off") {
+          setIsInfo(true)
+        } else {
+          setIsInfo(false)
+        }
       })
       .catch(error => console.log(error))
   }
-
   /** 웹소켓 프로토콜을 사용하여 서버 'WebSocketConfig' 연결 */
-  const ws = new WebSocket("ws://localhost:9000/flower/ws/order")
-
+  const ws = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/order")
   /** 웹소켓 연결관리 함수 */
   const connect = () => {
     /** 연결에 성공했을 경우 동작하는 메서드 */
@@ -59,8 +53,6 @@ export default function Cart(props) {
       if (msg != null) {
         var result = JSON.parse(msg.data);
         if (result.type === "SET_KIOSK") getKiosk()
-      } else {
-        console.log("없엉")
       }
     }
     return ws
@@ -71,8 +63,6 @@ export default function Cart(props) {
       var info = { type: "UPDATE_ORDERS" }
       /** object 를 String 으로 변환 */
       ws.send(JSON.stringify(info))
-    } else {
-      console.log("ws 값 어디갔냐")
     }
   }
   /** 컴포넌트 호출시 */
