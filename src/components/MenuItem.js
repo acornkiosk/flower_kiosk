@@ -58,16 +58,18 @@ export default function MenuItem(props) {
 
   // 상세 모달 열릴시
   const openModal = (item) => {
-    const list = [];
-    setSelectedMenu(item);
+    if (item.is_sold === "false") {
+      const list = [];
+      setSelectedMenu(item);
 
-    for (let tmp of commonTable) {
-      if (tmp.p_code_id === item.category_id) {
-        list.push(tmp);
+      for (let tmp of commonTable) {
+        if (tmp.p_code_id === item.category_id) {
+          list.push(tmp);
+        }
       }
+      setOptions({ ...options, self: list });
+      setShowModal(true);
     }
-    setOptions({ ...options, self: list });
-    setShowModal(true);
   };
 
   // 체크박스 선택시 옵션 저장 함수
@@ -161,7 +163,7 @@ export default function MenuItem(props) {
   return (
     <>
       {menu.map(item => (
-        <Card style={{ width: "23.5%" }} className="me-3" key={item.id} onClick={() => openModal(item)} disabled={item.is_sold === "true"}>
+        <Card style={{ width: "23.5%" }} className="me-3" key={item.id} onClick={() => openModal(item)}>
           <div className="position-relative">
             {item.is_sold === "true" &&
               <div className="position-absolute">
