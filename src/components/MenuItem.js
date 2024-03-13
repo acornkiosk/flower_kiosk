@@ -203,21 +203,23 @@ export default function MenuItem(props) {
                           padding : "30px" ,
                           border : "1px solid #F8F8FF",
                           borderRadius : "5px",
-                          backgroundColor : "#F8F8FF"
+                          backgroundColor : "#F8F8FF",
              }}>
             <h1 className="d-flex justify-content-center">{selectedMenu.name}</h1>
             </div>
-              <div style={{ 
+              <div className="d-flex align-items-start flex-column mb-3" style={{ 
                           padding : "30px" ,
                           border : "1px solid #FFFFF0",
                           borderRadius : "5px",
-                          backgroundColor : "#FFFFF0" }}>   
+                          backgroundColor : "#FFFFF0",
+                          height: "80%"
+                           }}>   
               <h4 className="d-flex justify-content-end">{selectedMenu.summary}</h4>
               <p className="d-flex justify-content-end">{selectedMenu.description}</p>
-              </div>
-              <h1 className="d-flex justify-content-end">
+              <h1 className="d-flex justify-content-end mt-auto p-2 ms-auto">
                 {selectedMenu.price}원
-              </h1>   
+              </h1> 
+              </div>  
             </Col>
           </Row>
           <Row>
