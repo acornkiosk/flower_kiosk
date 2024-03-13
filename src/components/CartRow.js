@@ -70,15 +70,15 @@ export default function CartRow(props) {
 
   return (
     <>
-      <Row className="border-bottom">
-        <Col md={1} className="mt-1 md-1">
+      <Row className="border-bottom" style={{ fontFamily: "Chanssam" }}>
+        <Col md={1} className="mt-1 md-1" style={{ fontFamily: "Chanssam" }}>
           <Button variant="secondary" onClick={deleteItem}><XSquareFill /></Button>
         </Col>
-        <Col md={5} className="mt-1 mb-1 d-flex align-items-center">{item.menu_name} {convertOptions()}</Col>
-        <Col md={1} className="mt-1 mb-1 d-flex align-items-center"><Button variant="warning" onClick={minus}><DashSquare /></Button></Col>
-        <Col md={1} className="mt-1 mb-1 d-flex align-items-center">{item.menu_count}개</Col>
-        <Col md={1} className="mt-1 mb-1 d-flex align-items-center"><Button variant="warning" onClick={plus}><PlusSquare /></Button></Col>
-        <Col md={3} className="mt-1 mb-1 d-flex align-items-center justify-content-end">{(item.menu_price + optionPrice) * item.menu_count}원</Col>
+        <Col md={5} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}>{item.menu_name} {convertOptions()}</Col>
+        <Col md={1} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}><Button variant="warning" onClick={minus}><DashSquare /></Button></Col>
+        <Col md={1} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}>{item.menu_count}개</Col>
+        <Col md={1} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}><Button variant="warning" onClick={plus}><PlusSquare /></Button></Col>
+        <Col md={3} className="mt-1 mb-1 d-flex align-items-center justify-content-end" style={{ fontFamily: "Chanssam" }}>{(item.menu_price + optionPrice) * item.menu_count}원</Col>
       </Row>
     </>
   )

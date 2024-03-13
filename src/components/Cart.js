@@ -130,15 +130,15 @@ export default function Cart(props) {
           <Col md={4} className="mb-2 d-flex flex-column" style={{ height: '350px' }}>
             <Row className="mt-2" style={{ flex: '2' }}>
               <Col>
-                <Button className="w-100 h-100">전체<br />삭제</Button>
+                <Button className="w-100 h-100" style={{ fontSize: 32, fontFamily: "Chanssam" }}>전체삭제</Button>
               </Col>
             </Row>
             <Row className="mt-2" style={{ flex: '2' }}>
-              <Col><h3 className="text-center">선택한 상품</h3></Col>
-              <Col><h3><span style={{ color: "red" }}>6</span>개</h3></Col>
+              <Col><h3 className="text-center" style={{ fontFamily: "Chanssam" }}>선택한 상품</h3></Col>
+              <Col><h3 style={{ fontFamily: "Chanssam" }}><span style={{ fontFamily: "Chanssam", color: "red" }}>6</span>개</h3></Col>
             </Row>
             <Row style={{ flex: '5' }}>
-              <Button size="lg" onClick={pay} disabled={orders.length === 0}>결제하기</Button>
+              <Button size="lg" onClick={pay} disabled={orders.length === 0} style={{ fontSize: 43, fontFamily: "Chanssam" }}>결제하기</Button>
             </Row>
           </Col>
         </Row>
