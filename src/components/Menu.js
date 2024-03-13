@@ -41,7 +41,7 @@ export default function Menu() {
     }
   }
   return (
-    <div>
+    <div style={{ fontFamily: "Chanssam" }}>
       <Tabs defaultActiveKey="All" className="mb-3" fill>
         <Tab eventKey="All" title="All">
           <div className="album py-5 ">
