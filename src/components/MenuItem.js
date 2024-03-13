@@ -199,15 +199,37 @@ export default function MenuItem(props) {
               <Image src={imgList[selectedMenu.img_name]} style={{ width: "100%" }} />
             </Col>
             <Col>
-              <h1>
-                {selectedMenu.name} {selectedMenu.price}원
-              </h1>
-              <h2>{selectedMenu.summary}</h2>
-              <h3>{selectedMenu.description}</h3>
+            <div className="border-bottom border-secondary" style={{
+                          padding : "30px" ,
+                          border : "1px solid #F8F8FF",
+                          borderRadius : "5px",
+                          backgroundColor : "#F8F8FF"
+             }}>
+            <h1 className="d-flex justify-content-center">{selectedMenu.name}</h1>
+            </div>
+              <div style={{ 
+                          padding : "30px" ,
+                          border : "1px solid #FFFFF0",
+                          borderRadius : "5px",
+                          backgroundColor : "#FFFFF0" }}>   
+              <h4 className="d-flex justify-content-end">{selectedMenu.summary}</h4>
+              <p className="d-flex justify-content-end">{selectedMenu.description}</p>
+              </div>
+              <h1 className="d-flex justify-content-end">
+                {selectedMenu.price}원
+              </h1>   
             </Col>
           </Row>
           <Row>
-            <h1>포장지 옵션</h1>
+            <br/>
+            <div style={{ 
+                          padding : "30px",
+                          border : "1px solid #FFFFFF",
+                          borderRadius : "5px",
+                          backgroundColor : "#FFFFFF" }}>
+                            
+          </div>
+            <h2>포장지 옵션</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.self.map(item => (
                 <Col key={item.code_id}>
@@ -233,7 +255,7 @@ export default function MenuItem(props) {
             </Row>
           </Row>
           <Row>
-            <h1>기타 옵션</h1>
+            <h2>기타 옵션</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.etc.map(item => (
                 <Col key={item.code_id}>
@@ -256,7 +278,7 @@ export default function MenuItem(props) {
             </Row>
           </Row>
           <Row className="mt-3">
-            <h1>포장 옵션</h1>
+            <h2>포장 옵션</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.bag.map(item => (
                 <Col key={item.code_id}>
