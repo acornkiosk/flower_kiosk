@@ -38,11 +38,14 @@ export default function Cart(props) {
   const connect = () => {
     /** 연결에 성공했을 경우 동작하는 메서드 */
     ws.onopen = () => {
-      console.log("손님 키오스크 오픈: " + ws.readyState)
+      console.log("손님 키오스크 컨넥트: " + ws.readyState)
       getKiosk()
     }
     /** 연결과정에서 에러가 생겼을 때 동작하는 메서드 */
-    ws.onerror = (error) => { console.log("index.js : 웹소켓 에러 "+error) }
+    ws.onerror = (error) => { 
+      console.log("손님 키오스크 : 웹소켓 에러 "+error) 
+      console.log("손님 키오스크 컨넥트: " + ws.readyState)
+    }
     /** 사장님 페이지 키오스크 관리 */
     ws.onmessage = (msg) => {
       if (msg != null) {
@@ -60,6 +63,7 @@ export default function Cart(props) {
       console.log("웹소켓이 종료되었습니다.")
       console.log("사유코드: "+res.code)
       console.log("사유내용: "+res.reason)
+      console.log("손님 키오스크 컨넥트: " + ws.readyState)
     }
     /**
      * ws.readyState 숫자해석
@@ -68,16 +72,16 @@ export default function Cart(props) {
      * 2 – “CLOSING”: 웹소켓 커넥션 종료 중
      * 3 – “CLOSED”: 웹소켓 커넥션이 종료됨
      */
-    console.log("손님 키오스크 : " + ws.readyState)
-
     return ws
   }
   /** 주문처리될 때 */
   const send = () => {
     if (ws != null) {
       var info = { type: "UPDATE_ORDERS" }
+      var toast = { type: "UPDATE_ORDERS_TOAST" }
       /** object 를 String 으로 변환 */
       ws.send(JSON.stringify(info))
+      ws.send(JSON.stringify(toast))
     } else {
       console.log("손님 키오스크 : ws 값 어디갔냐")
     }
