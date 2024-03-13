@@ -199,7 +199,7 @@ export default function MenuItem(props) {
               <Image src={imgList[selectedMenu.img_name]} style={{ width: "100%" }} />
             </Col>
             <Col>
-            <div className="border-bottom border-secondary" style={{
+            <div className="border-bottom secondary" style={{
                           padding : "30px" ,
                           border : "1px solid #F8F8FF",
                           borderRadius : "5px",
