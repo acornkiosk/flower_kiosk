@@ -29,25 +29,20 @@ export default function Cart(props) {
       })
       .catch(error => console.log(error))
   }
-  /** 웹소켓 프로토콜을 사용하여 서버 'WebSocketConfig' 연결 */
-  const ws = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/order")
+
+  /** 
+   *  용도: 웹소켓 프로토콜을 사용하여 서버 'WebSocketConfig' 연결
+   *  문제: 로그인시 한번에 두개씩 세션이 생성됨 */
+  const ws = new WebSocket("ws://localhost:9000/flower/ws/order");
   /** 웹소켓 연결관리 함수 */
   const connect = () => {
     /** 연결에 성공했을 경우 동작하는 메서드 */
     ws.onopen = () => {
-      console.log("손님 키오스크(Cart.js) : 실시간 화면연동 시작(웹소켓)")
+      console.log("손님 키오스크 오픈: " + ws.readyState)
       getKiosk()
     }
     /** 연결과정에서 에러가 생겼을 때 동작하는 메서드 */
-    ws.onerror = () => {
-      console.log("손님 키오스크(Cart.js) : 화면 연동이 원활하게 이루어지지 않고 있습니다. 서버 확인이 필요합니다(웹소켓)")
-      /** 연결 다시시도 */
-      setTimeout(() => {
-        connect()
-      }, 5000)
-    }
-    /** 자동으로 끊겼을 것을 대비한 로직 */
-    ws.close = () => { connect() }
+    ws.onerror = (error) => { console.log("index.js : 웹소켓 에러 "+error) }
     /** 사장님 페이지 키오스크 관리 */
     ws.onmessage = (msg) => {
       if (msg != null) {
@@ -55,6 +50,26 @@ export default function Cart(props) {
         if (result.type === "SET_KIOSK") getKiosk()
       }
     }
+    /** 커넥션 닫기 요청하는 코드
+     * socket.close(code, reason);
+     * code : 커넥션을 닫을 때 사용하는 특수 코드
+     * reason : 커넥션 닫기 사유를 설명하는 문자열
+     */
+    /** 커넥션 닫기 응답받는 코드 */
+    ws.close = (res) => {
+      console.log("웹소켓이 종료되었습니다.")
+      console.log("사유코드: "+res.code)
+      console.log("사유내용: "+res.reason)
+    }
+    /**
+     * ws.readyState 숫자해석
+     * 0 – “CONNECTING”: 웹소켓 연결 중
+     * 1 – “OPEN”: 웹소켓 연결이 성립되고 통신 
+     * 2 – “CLOSING”: 웹소켓 커넥션 종료 중
+     * 3 – “CLOSED”: 웹소켓 커넥션이 종료됨
+     */
+    console.log("손님 키오스크 : " + ws.readyState)
+
     return ws
   }
   /** 주문처리될 때 */
@@ -63,6 +78,8 @@ export default function Cart(props) {
       var info = { type: "UPDATE_ORDERS" }
       /** object 를 String 으로 변환 */
       ws.send(JSON.stringify(info))
+    } else {
+      console.log("손님 키오스크 : ws 값 어디갔냐")
     }
   }
   /** 컴포넌트 호출시 */
