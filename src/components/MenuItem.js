@@ -270,6 +270,13 @@ export default function MenuItem(props) {
               ))}
             </Row>
           </Row>
+          <div style={{ 
+                          padding : "30px",
+                          border : "1px solid #FFFFFF",
+                          borderRadius : "5px",
+                          backgroundColor : "#FFFFFF" }}>
+
+          </div>
           <Row>
             <h2>기타 옵션</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -294,6 +301,13 @@ export default function MenuItem(props) {
               ))}
             </Row>
           </Row>
+          <div style={{ 
+                          padding : "30px",
+                          border : "1px solid #FFFFFF",
+                          borderRadius : "5px",
+                          backgroundColor : "#FFFFFF" }}>
+
+          </div>
           <Row className="mt-3">
             <h2>포장 옵션</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
