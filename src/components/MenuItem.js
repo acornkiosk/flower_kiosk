@@ -131,17 +131,30 @@ export default function MenuItem(props) {
     }
   };
 
-  // 메뉴의 이름과 가격을 정리해주는 함수
-  const arrangeItem = (item) => {
+  // 메뉴의 이름을 정리해주는 함수
+  const arrangeItemName = (item) => {
     let result = "";
 
     if (item.code_value === 0) {
       result = item.code_name;
     } else {
-      result = item.code_name + " " + item.code_value + "원";
+      result = item.code_name;
     }
 
     return result;
+  };
+
+  // 메뉴의 가격을 정리해주는 함수
+  const arrangeItemPrice = (item) => {
+    let result1 = "";
+
+    if (item.code_value === 0) {
+      result1 = item.code_value;
+    } else {
+      result1 = item.code_value + "원";
+    }
+
+    return result1;
   };
 
   // 서버에서 이미지 가져오기
@@ -241,7 +254,7 @@ export default function MenuItem(props) {
                       <Card.Title>
                         <Form.Check
                           inline
-                          label={arrangeItem(item)}
+                          label={arrangeItemName(item)}
                           type="radio"
                           name="group1"
                           value={item.code_id}
@@ -249,6 +262,7 @@ export default function MenuItem(props) {
                             setWrap(e.target.value);
                           }}
                         />
+                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
@@ -267,11 +281,12 @@ export default function MenuItem(props) {
                       <Card.Title>
                         <Form.Check
                           inline
-                          label={arrangeItem(item)}
+                          label={arrangeItemName(item)}
                           type="checkbox"
                           checked={checked[item.code_id] || false}
                           onChange={(e) => handleChange(e, item)}
                         />
+                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
@@ -290,7 +305,7 @@ export default function MenuItem(props) {
                       <Card.Title>
                         <Form.Check
                           inline
-                          label={arrangeItem(item)}
+                          label={arrangeItemName(item)}
                           name="group2"
                           type="radio"
                           value={item.code_id}
@@ -303,6 +318,7 @@ export default function MenuItem(props) {
                           }}
                           checked={bag === item.code_id || (bag === 2019 && !Object.keys(checked).length)}
                         />
+                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
