@@ -42,7 +42,7 @@ export default function Menu() {
   }
   return (
     <div style={{ fontFamily: "Chanssam" }}>
-      <Tabs defaultActiveKey="All" className="mb-3" fill>
+      <Tabs defaultActiveKey="All" className="nav nav-actives mb-3" style={{fontSize: "25px", backgroundColor:"#FFFFCC"}} fill>
         <Tab eventKey="All" title="All">
           <div className="album py-5 ">
             <Container>
@@ -64,6 +64,13 @@ export default function Menu() {
           </Tab>
         )}
       </Tabs>
+      <style>
+        {`
+          .nav-link {
+            color: black !important;
+          }
+        `}
+      </style>
     </div>
   )
 }

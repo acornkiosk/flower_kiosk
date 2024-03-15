@@ -176,7 +176,7 @@ export default function MenuItem(props) {
   return (
     <>
       {menu.map(item => (
-        <Card style={{ fontFamily: "Chanssam",width: "23.5%" }} className="me-3" key={item.id} onClick={() => openModal(item)}>
+        <Card style={{ fontFamily: "Chanssam",width: "23.5%" }} className="me-3 " key={item.id} onClick={() => openModal(item)}>
           <div className="position-relative">
             {item.is_sold === "true" &&
               <div className="position-absolute">
