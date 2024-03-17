@@ -146,15 +146,15 @@ export default function MenuItem(props) {
 
   // 메뉴의 가격을 정리해주는 함수
   const arrangeItemPrice = (item) => {
-    let result1 = "";
+    let result = "";
 
     if (item.code_value === 0) {
-      result1 = item.code_value;
+      result = item.code_value;
     } else {
-      result1 = item.code_value + "원";
+      result = item.code_value + "원";
     }
 
-    return result1;
+    return result;
   };
 
   // 서버에서 이미지 가져오기
@@ -176,7 +176,7 @@ export default function MenuItem(props) {
   return (
     <>
       {menu.map(item => (
-        <Card style={{ fontFamily: "Chanssam",width: "23.5%" }} className="me-3" key={item.id} onClick={() => openModal(item)}>
+        <Card style={{ fontFamily: "Chanssam", width: "23.5%" }} className="me-3" key={item.id} onClick={() => openModal(item)}>
           <div className="position-relative">
             {item.is_sold === "true" &&
               <div className="position-absolute">
@@ -212,38 +212,39 @@ export default function MenuItem(props) {
               <Image src={imgList[selectedMenu.img_name]} style={{ width: "100%" }} />
             </Col>
             <Col>
-            <div className="border-bottom secondary" style={{
-                          padding : "30px" ,
-                          border : "1px solid #F8F8FF",
-                          borderRadius : "5px",
-                          backgroundColor : "#F8F8FF",
-             }}>
-            <h1 className="d-flex justify-content-center">{selectedMenu.name}</h1>
-            </div>
-              <div className="d-flex align-items-start flex-column mb-3" style={{ 
-                          padding : "30px" ,
-                          border : "1px solid #FFFFF0",
-                          borderRadius : "5px",
-                          backgroundColor : "#FFFFF0",
-                          height: "80%"
-                           }}>   
-              <h4 className="d-flex justify-content-end">{selectedMenu.summary}</h4>
-              <p className="d-flex justify-content-end">{selectedMenu.description}</p>
-              <h1 className="d-flex justify-content-end mt-auto p-2 ms-auto">
-                {selectedMenu.price}원
-              </h1> 
-              </div>  
+              <div className="border-bottom secondary" style={{
+                padding: "30px",
+                border: "1px solid #F8F8FF",
+                borderRadius: "5px",
+                backgroundColor: "#F8F8FF",
+              }}>
+                <h1 className="d-flex justify-content-center">{selectedMenu.name}</h1>
+              </div>
+              <div className="d-flex align-items-start flex-column mb-3" style={{
+                padding: "30px",
+                border: "1px solid #FFFFF0",
+                borderRadius: "5px",
+                backgroundColor: "#FFFFF0",
+                height: "80%"
+              }}>
+                <h4 className="d-flex justify-content-end">{selectedMenu.summary}</h4>
+                <p className="d-flex justify-content-end">{selectedMenu.description}</p>
+                <h1 className="d-flex justify-content-end mt-auto p-2 ms-auto">
+                  {selectedMenu.price}원
+                </h1>
+              </div>
             </Col>
           </Row>
           <Row>
-            <br/>
-            <div style={{ 
-                          padding : "30px",
-                          border : "1px solid #FFFFFF",
-                          borderRadius : "5px",
-                          backgroundColor : "#FFFFFF" }}>
-                            
-          </div>
+            <br />
+            <div style={{
+              padding: "30px",
+              border: "1px solid #FFFFFF",
+              borderRadius: "5px",
+              backgroundColor: "#FFFFFF"
+            }}>
+
+            </div>
             <h2>포장지 옵션</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.self.map(item => (
@@ -262,7 +263,7 @@ export default function MenuItem(props) {
                             setWrap(e.target.value);
                           }}
                         />
-                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
+                        <p className="d-flex justify-content-center" style={{ backgroundColor: "#FFCCFF", marginLeft: "110px" }}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
@@ -286,7 +287,7 @@ export default function MenuItem(props) {
                           checked={checked[item.code_id] || false}
                           onChange={(e) => handleChange(e, item)}
                         />
-                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
+                        <p className="d-flex justify-content-center" style={{ backgroundColor: "#FFCCFF", marginLeft: "110px" }}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
@@ -318,7 +319,7 @@ export default function MenuItem(props) {
                           }}
                           checked={bag === item.code_id || (bag === 2019 && !Object.keys(checked).length)}
                         />
-                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
+                        <p className="d-flex justify-content-center" style={{ backgroundColor: "#FFCCFF", marginLeft: "110px" }}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
