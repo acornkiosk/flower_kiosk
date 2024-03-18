@@ -318,7 +318,6 @@ export default function MenuItem(props) {
                               setBag(2019);
                             }
                           }}
-                          checked={bag === item.code_id || (bag === 2019 && !Object.keys(checked).length)}
                         />
                         <p className="d-flex justify-content-center" style={{ backgroundColor: "#FFCCFF", marginLeft: "110px" }}>{arrangeItemPrice(item)}</p>
                       </Card.Title>

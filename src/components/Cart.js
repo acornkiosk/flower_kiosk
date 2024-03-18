@@ -131,8 +131,6 @@ export default function Cart(props) {
     })
   }
   
-
-
   useEffect(()=>{
 
     let total = 0; 
