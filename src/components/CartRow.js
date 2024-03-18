@@ -1,4 +1,4 @@
-import { useState } from "react"
+import {  useEffect, useState } from "react"
 import { Button, Col, Row } from "react-bootstrap"
 import { DashSquare, PlusSquare, XSquareFill } from "react-bootstrap-icons"
 import { useDispatch, useSelector } from "react-redux"
@@ -9,7 +9,10 @@ export default function CartRow(props) {
   const dispatch = useDispatch()
   const { item } = props
   //옵션들의 가격을 저장하는 state
-  const [optionPrice, setOptionPrice] = useState(0)
+  const [optionPrice, setOptionPrice] = useState(0);
+  const [optionTitle, setOptionTitle] = useState(item.menu_name);
+
+
   const updateOrders = (newOrders) => {
     const action = {
       type: "UPDATE_ORDERS",
@@ -17,6 +20,7 @@ export default function CartRow(props) {
     }
     dispatch(action)
   }
+
   //아이템 삭제 기능
   const deleteItem = () => {
     const newOrders = orders.filter(tmp => tmp.id !== item.id)
@@ -44,8 +48,8 @@ export default function CartRow(props) {
     })
     updateOrders(newOrders)
   }
-  //options 이름으로 변경 기능
-  const convertOptions = () => {
+
+  useEffect(() => {
     let result = ""
     let list = item.options.replace(" ", "").split(",")
     let price = 0
@@ -60,13 +64,13 @@ export default function CartRow(props) {
         }
       })
     })
-  
     if (optionPrice !== price) {
       setOptionPrice(price)
     }
-    
-    return result
-  }
+    setOptionTitle(result);
+  }, [optionPrice, commonTable, item.options]);
+
+  const sum = (item.menu_price + optionPrice) * item.menu_count;
 
   return (
     <>
@@ -74,11 +78,11 @@ export default function CartRow(props) {
         <Col md={1} className="mt-1 md-1" style={{ fontFamily: "Chanssam" }}>
           <Button variant="secondary" onClick={deleteItem}><XSquareFill /></Button>
         </Col>
-        <Col md={5} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}>{item.menu_name} {convertOptions()}</Col>
+        <Col md={5} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}>{item.menu_name} {optionTitle}</Col>
         <Col md={1} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}><Button variant="warning" onClick={minus}><DashSquare /></Button></Col>
         <Col md={1} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}>{item.menu_count}개</Col>
         <Col md={1} className="mt-1 mb-1 d-flex align-items-center" style={{ fontFamily: "Chanssam" }}><Button variant="warning" onClick={plus}><PlusSquare /></Button></Col>
-        <Col md={3} className="mt-1 mb-1 d-flex align-items-center justify-content-end" style={{ fontFamily: "Chanssam" }}>{(item.menu_price + optionPrice) * item.menu_count}원</Col>
+        <Col md={3} className="mt-1 mb-1 d-flex align-items-center justify-content-end" style={{ fontFamily: "Chanssam" }} >{sum}원</Col>
       </Row>
     </>
   )
