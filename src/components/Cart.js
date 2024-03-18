@@ -46,8 +46,8 @@ export default function Cart(props) {
       getKiosk()
     }
     /** 연결과정에서 에러가 생겼을 때 동작하는 메서드 */
-    ws.onerror = (error) => { 
-      console.log("손님 키오스크 : 웹소켓 에러 "+error) 
+    ws.onerror = (error) => {
+      console.log("손님 키오스크 : 웹소켓 에러 " + error)
       console.log("손님 키오스크 컨넥트: " + ws.readyState)
     }
     /** 사장님 페이지 키오스크 관리 */
@@ -65,8 +65,8 @@ export default function Cart(props) {
     /** 커넥션 닫기 응답받는 코드 */
     ws.close = (res) => {
       console.log("웹소켓이 종료되었습니다.")
-      console.log("사유코드: "+res.code)
-      console.log("사유내용: "+res.reason)
+      console.log("사유코드: " + res.code)
+      console.log("사유내용: " + res.reason)
       console.log("손님 키오스크 컨넥트: " + ws.readyState)
     }
     /**
