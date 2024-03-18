@@ -4,6 +4,7 @@ import { Button, Col, Container, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import CartRow from "./CartRow"
 import InfoModal from "./InfoModal"
+import { convertOptionsIntoPrice } from "./util"
 
 export default function Cart(props) {
   /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
@@ -11,7 +12,10 @@ export default function Cart(props) {
   const orders = useSelector(state => state.orders)
   const id = useSelector(state => state.kiosk)
   const dispatch = useDispatch()
-  const [isInfo, setIsInfo] = useState(false)
+  const [isInfo, setIsInfo] = useState(false); 
+  const commonTable = useSelector(state => state.commonTable)
+
+  const [sum, setSum] = useState(0)
   //키오스크 정보 axios
   function getKiosk() {
     axios.post("/api/kiosk/get", { id: id })
@@ -126,7 +130,19 @@ export default function Cart(props) {
       payload:[]
     })
   }
+  
 
+
+  useEffect(()=>{
+
+    let total = 0; 
+    for (let i = 0 ; i < orders.length ; i++) {
+      const optionPrice = convertOptionsIntoPrice(orders[i].options, commonTable); 
+      total += (orders[i].menu_price + optionPrice) * orders[i].menu_count;
+    }
+    setSum(total);
+  },[orders])
+  
   return (
     <>
       {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />}
@@ -134,24 +150,24 @@ export default function Cart(props) {
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>
             {orders.map(item =>
+            
               <div key={item.id}>
                 <CartRow item={item} />
               </div>
             )}
-            <p>test</p>
           </Col>
           <Col md={4} className="mb-2 d-flex flex-column" style={{ height: '350px' }}>
             <Row className="mt-2" style={{ flex: '2' }}>
-              <Col>
                 <Button className="w-100 h-100" style={{ fontSize: 32, fontFamily: "Chanssam" }} onClick={DeleteCart}>전체삭제</Button>
-              </Col>
             </Row>
             <Row className="mt-2" style={{ flex: '2' }}>
-              <Col><h3 className="text-center" style={{ fontFamily: "Chanssam" }}>선택한 상품 </h3></Col>
-              <Col><h3 style={{ fontFamily: "Chanssam" }}><span style={{ fontFamily: "Chanssam", color: "red" }}>{orders.length}</span>개</h3></Col>
+              <Col>
+              <Col><h3 className="text-center" style={{ fontFamily: "Chanssam" }}>선택한 상품 <span style={{ fontFamily: "Chanssam", color: "red" }}>{orders.length}</span>개</h3></Col>
+              <Col><h3 className="text-center" style={{ fontFamily: "Chanssam" }}>주문 금액<span style={{ fontFamily: "Chanssam", color: "red" }}>{sum}</span>원</h3></Col>
+              </Col>
             </Row>
-            <Row style={{ flex: '5' }}>
-              <Button onClick={pay} disabled={orders.length === 0} style={{ fontSize: 43, fontFamily: "Chanssam" }}>결제하기</Button>
+            <Row className="mt-2" style={{ flex: '5' }}>
+              <Button onClick={pay} disabled={orders.length === 0} style={{ fontSize: 43, fontFamily: "Chanssam" }}>결제하기 </Button>
             </Row>
           </Col>
         </Row>
