@@ -58,7 +58,7 @@ function SEND(type) {
         let toast = { type: "SET_TOAST" }
         WS.send(JSON.stringify(info))
         WS.send(JSON.stringify(toast))
-        return console.log("웹소켓 메시지 전달")
+        console.log("주문접수")
     }
 }
 

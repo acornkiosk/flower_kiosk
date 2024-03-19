@@ -43,7 +43,7 @@ export default function Cart(props) {
             console.log(result.type)
             setTimeout(()=>{
               getKiosk()
-            }, 500)
+            }, 500) // 이거 안하면 getKiosk() res.data 가 이전 값으로 들어옴
             //getKiosk()
           }
         }
@@ -80,6 +80,7 @@ export default function Cart(props) {
   }
   const updateDB = (list) => {
     list.forEach(item => {
+      item.kiosk_id = id.kiosk // id = {kiosk: number} : 사장님 주문관리 페이지 오류 원인
       axios.post("/api/order", item)
         .then(res => {
           console.log("주문하기 결과 : " + res.data.status)
