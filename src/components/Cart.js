@@ -43,7 +43,7 @@ export default function Cart(props) {
             console.log(result.type)
             setTimeout(()=>{
               getKiosk()
-            }, 500) // 이거 안하면 getKiosk() res.data 가 이전 값으로 들어옴
+            }, 500) // 이거 안하면 DB 최신화 했음에도 getKiosk() res.data 가 이전 값으로 들어옴
             //getKiosk()
           }
         }
