@@ -4,8 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 /** 안내 메시지 */
 function InfoModal(props) { 
     /** Cart.js 와 App.js 모두 연결 */
-    const {setIsInfo} = props
-    const {setLogin} = props
+    const { setIsInfo, setLogin } = props
     return (
       <Modal
         {...props} 
