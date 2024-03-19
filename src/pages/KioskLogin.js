@@ -4,19 +4,41 @@ import { Alert, Button, Col, Container, Image, Row } from "react-bootstrap"
 
 import { BackspaceFill, DashSquare, Icon0Square, Icon1Square, Icon2Square, Icon3Square, Icon4Square, Icon5Square, Icon6Square, Icon7Square, Icon8Square, Icon9Square } from "react-bootstrap-icons"
 import { useDispatch } from "react-redux"
+import Connect from "../websocket/WebSocket"
 
 export default function KioskLogin(props) {
   const [num, setNum] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const dispatch = useDispatch()
+  const { setIsInfo, setLogin } = props
   //로그인 버튼을 누를시 실제 Db에 있는 값을 비교
   const login = () => {
     let id = parseInt(num)
     axios.post("/api/kiosk/get", { id: id })
       .then(res => {
-        if (res.data.dto.id == id) {
-          props.setLogin(true)
-          dispatch({ type: "SET_KIOSK", payload: num })
+        if (res.data.dto.id === id) {
+          /** 전원 여부 확인하기 */
+          let kiostPower = res.data.dto.power
+          if (kiostPower === "off") {
+            console.log("반응함 off")
+            /** 웹소켓 close */
+            Connect({power:false})
+            /** 접근불가 모달 띄우기 */
+            setIsInfo(true)
+            /** store 작업 */
+            dispatch({ type: "SET_KIOSK", payload: null })
+          } else {
+            console.log("반응함 on")
+            /** 웹소켓 open */
+            Connect({power:true, id: res.data.dto.id})
+            /** 접근불가 모달 닫기 */
+            setIsInfo(false)
+            /** 로그인 성공신호 전달 */
+            setLogin(true)
+            /** store 작업 */
+            const data = { kiosk:res.data.dto.id }
+            dispatch({ type: "SET_KIOSK", payload: data })
+          }
         } else {
           setShowAlert(true)
         }
