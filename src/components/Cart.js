@@ -1,11 +1,11 @@
 import axios from "axios"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import CartRow from "./CartRow"
 import InfoModal from "./InfoModal"
 import { convertOptionsIntoPrice } from "./util"
-import { SEND, WS } from "../websocket/WebSocket"
+import { send, kioskPower, result } from "../websocket/WebSocket"
 
 export default function Cart(props) {
   /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
@@ -16,7 +16,7 @@ export default function Cart(props) {
   const [isInfo, setIsInfo] = useState(false);
   const commonTable = useSelector(state => state.commonTable)
   const [sum, setSum] = useState(0)
-  const ws = useRef(WS)
+  let ws = useSelector(state => state.ws)
 
   /** 키오스크 정보 axios */
   function getKiosk() {
@@ -31,32 +31,12 @@ export default function Cart(props) {
       .catch(error => console.log(error))
   }
 
-  /** 웹소켓 연결관리 함수 */
-  const connect = () => {
-    if (ws !== undefined) {
-      /** 사장님 페이지 키오스크 관리 */
-      ws.current.onmessage = (msg) => {
-        console.log(msg)
-        if (msg != null) {
-          var result = JSON.parse(msg.data);
-          if (result.type === "SET_KIOSK") {
-            console.log(result.type)
-            setTimeout(()=>{
-              getKiosk()
-            }, 500) // 이거 안하면 DB 최신화 했음에도 getKiosk() res.data 가 이전 값으로 들어옴
-            //getKiosk()
-          }
-        }
-      }
-    }
-  }
-
   /** 컴포넌트 호출시 */
   useEffect(() => {
-    console.log("Cart.js 의 ws")
-    console.log(ws)
-    connect()
-   
+    /** WebSocket.js */
+    kioskPower(ws)
+    /** json으로 받아온 값을 result로 넣고 확인 */
+    if(result != null && result.type === 'SET_KIOSK') {getKiosk();}
   }, [ws])
   const pay = () => {
     axios.get("/api/order/cartId")
@@ -73,8 +53,8 @@ export default function Cart(props) {
         updateDB(newList)
         /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
         setCompleted(true)
-        /** 주문정보 완전 업데이트 이후로 웹소켓 요청 */
-        SEND("ORDERS")
+        /** 웹소켓으로 접수신호 전달하기 */
+        send(ws)
       })
       .catch(error => console.log(error))
   }

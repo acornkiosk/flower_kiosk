@@ -43,7 +43,6 @@ export default function MenuItem(props) {
       type: "UPDATE_ORDERS",
       payload: list
     };
-    console.log(orders)
     dispatch(action);
     closeModal();
   };

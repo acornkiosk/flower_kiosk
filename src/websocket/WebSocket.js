@@ -1,69 +1,66 @@
 
-/** 웹소켓 객체 공유 */
-let WS
-export default function Connect(event) {
-    /** 매개변수 종류 */
-    const { power, id } = event
-    console.log("웹소켓 키오스크 id: "+ id)
-    /** 전원을 킬 때 */
-    if (power) { KioskOn(id) }
-    /** 전원을 끌 때 */
-    else if (!power) { KioskOff() }
-    /** 전원은 꺼져있으나 웹소켓이 살이 있을 때 */
-    else if (!power && WS !== undefined) { KioskOff() }
-}
-function KioskOn(id) {
-    /** 참고: 여기서는 useRef 관리 및 store 작업 자체 불가함(에러없이 로직멈춤) */
-    WS = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
-    /** 로그인 */
-    WS.onopen = () => { console.log(socketState(WS.readyState)) }
+export default function connect(ws, id) {
+    /** localhost용 요청링크 */
+    ws.current = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
+    /** 실제서버용 요청링크 */
+    //WS = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/kiosk/" + id)
+
+    /** 최초 연결 후 동작 */
+    ws.current.onopen = () => { console.log(socketState(ws.current.readyState)) }
     /** 연결 후 사용중에 에러! */
-    WS.onerror = (e) => {
+    ws.current.onerror = (e) => {
         console.log(e)
-        console.log(socketState(WS.readyState))
+        console.log(socketState(ws.current.readyState))
     }
     /** 닫힌 이후의 로직 */
-    WS.onclose = (e) => {
-        console.log(e.code)
+    ws.current.onclose = (e) => {
+        /** 서버로부터 종료된 사유를 읽어오는 명령어 */
         let reason = getCloseEventCodeReason(e.code)
         console.log(e.code, reason)
-        console.log(socketState(WS.readyState))
-    }
-}
-function KioskOff() {
-    /** undefined 에러 방지 */
-    if (WS !== undefined) {
-        WS.close()
-        console.log(socketState(WS.readyState))
     }
     /**
-   * WebSocket close 와 onclose 의 차이와 사용법
-   * 
-   * code : 커넥션을 닫을 때 사용하는 특수 코드
-   * reason : 커넥션 닫기 사유를 설명하는 문자열
-   *
-   * close 
-   * 작성법 : WebSocket.close(code, reason);
-   * 의미 : 사유를 지정하여 직접 웹소켓 종료시키기
-   * 
-   * onclose
-   * 작성법 : WebSocket.close = () => { 명령할 함수 작성 }
-   * 의미 : 종료될 경우 함수 실행
-   */
+     * WebSocket close 와 onclose 의 차이와 사용법
+     * 
+     * code : 커넥션을 닫을 때 사용하는 특수 코드
+     * reason : 커넥션 닫기 사유를 설명하는 문자열
+     *
+     * close 
+     * 작성법 : WebSocket.close(code, reason);
+     * 의미 : 사유를 지정하여 직접 웹소켓 종료시키기
+     * 
+     * onclose
+     * 작성법 : WebSocket.close = () => { 명령할 함수 작성 }
+     * 의미 : 종료될 경우 함수 실행
+     */
+
 }
-function SEND(type) {
-    /** Cart.js */
-    if (type === "ORDERS") {
+function close(ws, msg) {
+    /** undefined 에러 방지 */
+    if (ws.current) {
+        ws.current.close(1000, msg)
+        console.log(socketState(ws.current.readyState))
+    }
+}
+function send(ws) {
+    if (ws.current) {
+        /** Cart.js */
         let info = { type: "UPDATE_ORDERS" }
         let toast = { type: "SET_TOAST" }
-        WS.send(JSON.stringify(info))
-        WS.send(JSON.stringify(toast))
+        ws.current.send(JSON.stringify(info))
+        ws.current.send(JSON.stringify(toast))
         console.log("주문접수")
     }
 }
-
+let result
+function kioskPower(ws){
+    if(ws.current){
+        ws.current.onmessage = (msg) => {
+            result = JSON.parse(msg.data);
+        }
+    }
+}
 // 반환할 값을 정의한다(변수명)
-export { SEND, WS }
+export { send, close, kioskPower, result}
 
 /** 웹소켓 커넥트 상태메시지 */
 function socketState(msg) {
