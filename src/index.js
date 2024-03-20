@@ -1,17 +1,17 @@
+import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
 import App from './App';
 import './index.css';
-import 'bootstrap/dist/css/bootstrap.css'
 import reportWebVitals from './reportWebVitals';
 
 const initialstate = {
   commonTable: [],
   orders: [],
   kiosk: 0,
-  order_id : 0,
+  order_id: 0,
   menu: []
 }
 const reducer = (state = initialstate, action) => {
@@ -36,12 +36,12 @@ const reducer = (state = initialstate, action) => {
       ...state,
       order_id: action.payload
     }
-  }else if(action.type === "GET_MENU") {
+  } else if (action.type === "GET_MENU") {
     newState = {
       ...state,
       menu: action.payload
     }
-  }else {
+  } else {
     newState = state
   }
   return newState

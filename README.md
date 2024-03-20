@@ -2,7 +2,7 @@
 
 **팀 프로젝트의 프론트 엔드 Repository 입니다.**
 
-[백엔드 Repositroy](https://github.com/acornkiosk/Flower_back) <br/>
+[백엔드 Repositroy](https://github.com/acornkiosk/flower-back) <br/>
 [프론트엔드 Repository](https://github.com/acornkiosk/flower_front)
 
 ## 프로젝트 특징

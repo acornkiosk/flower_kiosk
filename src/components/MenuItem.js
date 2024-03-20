@@ -46,7 +46,6 @@ export default function MenuItem(props) {
     dispatch(action);
     closeModal();
   };
-
   // 모달 닫는 함수
   const closeModal = () => {
     setShowModal(false);
@@ -55,13 +54,11 @@ export default function MenuItem(props) {
     setWrap(0);
     setBag(2019); // 모달이 닫힐 때 다시 초기값으로 설정
   };
-
   // 상세 모달 열릴시
   const openModal = (item) => {
     if (item.is_sold === "false") {
       const list = [];
       setSelectedMenu(item);
-
       for (let tmp of commonTable) {
         if (tmp.p_code_id === item.category_id) {
           list.push(tmp);
@@ -71,7 +68,6 @@ export default function MenuItem(props) {
       setShowModal(true);
     }
   };
-
   // 체크박스 선택시 옵션 저장 함수
   const handleChange = (e, item) => {
     const isChecked = e.target.checked;
@@ -80,7 +76,6 @@ export default function MenuItem(props) {
       [item.code_id]: isChecked
     });
   };
-
   // 옵션을 DB에 넣기 위해 리스트 형태로 변형
   const convertOption = () => {
     let result = "";
@@ -96,7 +91,6 @@ export default function MenuItem(props) {
     etcKeys.forEach(tmp => (result += tmp + ", "));
     return result;
   };
-
   useEffect(() => {
     menu.forEach(item => getMenuImage(item.img_name))
     /** 공통 option 설정 */
@@ -106,57 +100,46 @@ export default function MenuItem(props) {
       if (item.p_code_id === 2012) {
         etcList.push(item);
       }
-
       if (item.p_code_id === 2016) {
         bagList.push(item);
       }
     }
     setOptions({ ...options, etc: etcList, bag: bagList });
-
     // 포장 옵션 초기값 설정
     setBag(2019); // 기본값으로 2019 설정
   }, []);
-
   // 개수 빼기 함수
   const minus = () => {
     if (count > 1) {
       setCount(count - 1);
     }
   };
-
   // 개수 추가 함수
   const plus = () => {
     if (count < 9) {
       setCount(count + 1);
     }
   };
-
   // 메뉴의 이름을 정리해주는 함수
   const arrangeItemName = (item) => {
     let result = "";
-
     if (item.code_value === 0) {
       result = item.code_name;
     } else {
       result = item.code_name;
     }
-
     return result;
   };
-
   // 메뉴의 가격을 정리해주는 함수
   const arrangeItemPrice = (item) => {
-    let result1 = "";
-
+    let result = "";
     if (item.code_value === 0) {
-      result1 = item.code_value;
+      result = item.code_value;
     } else {
-      result1 = item.code_value + "원";
+      result = item.code_value + "원";
     }
-
-    return result1;
+    return result;
   };
-
   // 서버에서 이미지 가져오기
   const getMenuImage = (img_name) => {
     if (img_name) {
@@ -170,13 +153,11 @@ export default function MenuItem(props) {
           }
         })
     }
-
   }
-
   return (
     <>
       {menu.map(item => (
-        <Card style={{ fontFamily: "Chanssam",width: "23.5%" }} className="me-3 " key={item.id} onClick={() => openModal(item)}>
+        <Card style={{ fontFamily: "Chanssam", width: "20%" }} className="container me-3" key={item.id} onClick={() => openModal(item)}>
           <div className="position-relative">
             {item.is_sold === "true" &&
               <div className="position-absolute">
@@ -212,38 +193,38 @@ export default function MenuItem(props) {
               <Image src={imgList[selectedMenu.img_name]} style={{ width: "100%" }} />
             </Col>
             <Col>
-            <div className="border-bottom secondary" style={{
-                          padding : "30px" ,
-                          border : "1px solid #F8F8FF",
-                          borderRadius : "5px",
-                          backgroundColor : "#F8F8FF",
-             }}>
-            <h1 className="d-flex justify-content-center">{selectedMenu.name}</h1>
-            </div>
-              <div className="d-flex align-items-start flex-column mb-3" style={{ 
-                          padding : "30px" ,
-                          border : "1px solid #FFFFF0",
-                          borderRadius : "5px",
-                          backgroundColor : "#FFFFF0",
-                          height: "80%"
-                           }}>   
-              <h4 className="d-flex justify-content-end">{selectedMenu.summary}</h4>
-              <p className="d-flex justify-content-end">{selectedMenu.description}</p>
-              <h1 className="d-flex justify-content-end mt-auto p-2 ms-auto">
-                {selectedMenu.price}원
-              </h1> 
-              </div>  
+              <div className="border-bottom secondary" style={{
+                padding: "30px",
+                border: "1px solid #F8F8FF",
+                borderRadius: "5px",
+                backgroundColor: "#F8F8FF",
+              }}>
+                <h1 className="d-flex justify-content-center">{selectedMenu.name}</h1>
+              </div>
+              <div className="d-flex align-items-start flex-column mb-3" style={{
+                padding: "30px",
+                border: "1px solid #FFFFF0",
+                borderRadius: "5px",
+                backgroundColor: "#FFFFF0",
+                height: "80%"
+              }}>
+                <h4 className="d-flex justify-content-end">{selectedMenu.summary}</h4>
+                <p className="d-flex justify-content-end">{selectedMenu.description}</p>
+                <h1 className="d-flex justify-content-end mt-auto p-2 ms-auto">
+                  {selectedMenu.price}원
+                </h1>
+              </div>
             </Col>
           </Row>
           <Row>
-            <br/>
-            <div style={{ 
-                          padding : "30px",
-                          border : "1px solid #FFFFFF",
-                          borderRadius : "5px",
-                          backgroundColor : "#FFFFFF" }}>
-                            
-          </div>
+            <br />
+            <div style={{
+              padding: "30px",
+              border: "1px solid #FFFFFF",
+              borderRadius: "5px",
+              backgroundColor: "#FFFFFF"
+            }}>
+            </div>
             <h2>포장지 옵션</h2>
             <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
               {options.self.map(item => (
@@ -262,7 +243,7 @@ export default function MenuItem(props) {
                             setWrap(e.target.value);
                           }}
                         />
-                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
+                        <p className="d-flex justify-content-center" style={{ backgroundColor: "#FFCCFF", marginLeft: "110px" }}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
@@ -293,7 +274,7 @@ export default function MenuItem(props) {
                           checked={checked[item.code_id] || false}
                           onChange={(e) => handleChange(e, item)}
                         />
-                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
+                        <p className="d-flex justify-content-center" style={{ backgroundColor: "#FFCCFF", marginLeft: "110px" }}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>
@@ -330,9 +311,8 @@ export default function MenuItem(props) {
                               setBag(2019);
                             }
                           }}
-                          checked={bag === item.code_id || (bag === 2019 && !Object.keys(checked).length)}
                         />
-                        <p className="d-flex justify-content-center" style={{backgroundColor : "#FFCCFF", marginLeft: "110px"}}>{arrangeItemPrice(item)}</p>
+                        <p className="d-flex justify-content-center" style={{ backgroundColor: "#FFCCFF", marginLeft: "110px" }}>{arrangeItemPrice(item)}</p>
                       </Card.Title>
                     </Card.Body>
                   </Card>

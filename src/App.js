@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import './App.css';
 import Complete from './components/Complete';
+import InfoModal from './components/InfoModal';
 import KioskLogin from './pages/KioskLogin';
 import Main from './pages/Main';
 import Welcome from './pages/Welcome';
@@ -25,11 +26,13 @@ function App() {
   const [isLogin, setLogin] = useState(false)
   const [isCompleted, setCompleted] = useState(false)
   const [isWelcome, setWelcome] = useState(false)
+  const [isInfo, setIsInfo] = useState(false)
   return (
     <div>
-      {!isLogin && <KioskLogin isLogin={isLogin} setLogin={setLogin} />}
+      {!isLogin && <KioskLogin setLogin={setLogin} setIsInfo={setIsInfo} />}
       {/** 다른 컴포넌트에서 로그아웃한 이력을 가져오기 위해 isLogin과 setLogin을 넣음 */}
-      {isLogin && !isWelcome && <Welcome setWelcome={setWelcome}/>}
+      <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />
+      {isLogin && !isWelcome && <Welcome setWelcome={setWelcome} />}
       {isLogin && !isCompleted && isWelcome && <Main isLogin={isLogin} setLogin={setLogin} setCompleted={setCompleted} />}
       {isCompleted && <Complete setCompleted={setCompleted} />}
     </div>
