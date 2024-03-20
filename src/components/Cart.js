@@ -36,12 +36,10 @@ export default function Cart(props) {
     if (ws !== undefined) {
       /** 사장님 페이지 키오스크 관리 */
       ws.current.onmessage = (msg) => {
-        console.log(msg)
         if (msg != null) {
           var result = JSON.parse(msg.data);
           if (result.type === "SET_KIOSK") {
-            console.log(result.type)
-            setTimeout(()=>{
+            setTimeout(() => {
               getKiosk()
             }, 500) // 이거 안하면 DB 최신화 했음에도 getKiosk() res.data 가 이전 값으로 들어옴
             //getKiosk()
@@ -53,10 +51,7 @@ export default function Cart(props) {
 
   /** 컴포넌트 호출시 */
   useEffect(() => {
-    console.log("Cart.js 의 ws")
-    console.log(ws)
     connect()
-   
   }, [ws])
   const pay = () => {
     axios.get("/api/order/cartId")
@@ -97,7 +92,6 @@ export default function Cart(props) {
   }
 
   useEffect(() => {
-
     let total = 0;
     for (let i = 0; i < orders.length; i++) {
       const optionPrice = convertOptionsIntoPrice(orders[i].options, commonTable);
@@ -105,7 +99,6 @@ export default function Cart(props) {
     }
     setSum(total);
   }, [orders])
-
   return (
     <>
       {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />}

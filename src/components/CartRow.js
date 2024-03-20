@@ -11,8 +11,6 @@ export default function CartRow(props) {
   //옵션들의 가격을 저장하는 state
   const [optionPrice, setOptionPrice] = useState(0);
   const [optionTitle, setOptionTitle] = useState(item.menu_name);
-
-
   const updateOrders = (newOrders) => {
     const action = {
       type: "UPDATE_ORDERS",
@@ -20,7 +18,6 @@ export default function CartRow(props) {
     }
     dispatch(action)
   }
-
   //아이템 삭제 기능
   const deleteItem = () => {
     const newOrders = orders.filter(tmp => tmp.id !== item.id)
@@ -48,7 +45,6 @@ export default function CartRow(props) {
     })
     updateOrders(newOrders)
   }
-
   useEffect(() => {
     let result = ""
     let list = item.options.replace(" ", "").split(",")

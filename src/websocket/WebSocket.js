@@ -14,7 +14,7 @@ export default function Connect(event) {
 }
 function KioskOn(id) {
     /** 참고: 여기서는 useRef 관리 및 store 작업 자체 불가함(에러없이 로직멈춤) */
-    WS = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
+    WS = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/kiosk/" + id)
     /** 로그인 */
     WS.onopen = () => { console.log(socketState(WS.readyState)) }
     /** 연결 후 사용중에 에러! */
