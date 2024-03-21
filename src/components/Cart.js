@@ -5,31 +5,19 @@ import { useDispatch, useSelector } from "react-redux"
 import CartRow from "./CartRow"
 import InfoModal from "./InfoModal"
 import { convertOptionsIntoPrice } from "./util"
-import { send, kioskPower } from "../websocket/WebSocket"
+import { send } from "../websocket/WebSocket"
 
 export default function Cart(props) {
   /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
-  const { setLogin, setCompleted } = props
+  const { setLogin, setCompleted, isInfo, setIsInfo } = props
   const orders = useSelector(state => state.orders)
   const id = useSelector(state => state.kiosk)
   const dispatch = useDispatch()
-  const [isInfo, setIsInfo] = useState(false);
+  // const [isInfo, setIsInfo] = useState(false);
   const commonTable = useSelector(state => state.commonTable)
   const [sum, setSum] = useState(0)
   let ws = useSelector(state => state.ws)
 
-  /** 컴포넌트 호출시 */
-  useEffect(() => {
-    /** WebSocket.js */
-    kioskPower(ws, (result) => {
-      if (result.type === "SET_KIOSK" && result.power === "off") {
-        console.log(result.power)
-        setIsInfo(true)
-      }else if(result.type === "SET_KIOSK" && result.power === "on"){
-        setIsInfo(false)
-      }
-    })
-  }, [ws])
   const pay = () => {
     axios.get("/api/order/cartId")
       .then(res => {
@@ -78,7 +66,7 @@ export default function Cart(props) {
   }, [orders])
   return (
     <>
-      {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />}
+      <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />
       <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight: '400px' }}>
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>
