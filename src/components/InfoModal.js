@@ -7,14 +7,14 @@ import { close }from "../websocket/WebSocket"
 /** 안내 메시지 */
 function InfoModal(props) {
   /** Cart.js 와 App.js 모두 연결 */
-  const { setIsInfo, setLogin } = props
+const { setIsInfo, setLogin, show } = props
   let ws = useSelector(state => state.ws)
   const dispatch = useDispatch()
   return (
     <Modal
-      {...props}
-      show={props.show}
-      setLogin={props.setLogin}
+    {...props}
+    show={show}
+    setLogin={setLogin}
       backdrop="static"
       keyboard={false}
     >

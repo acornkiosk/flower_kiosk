@@ -19,13 +19,14 @@ export default function Connect(ws, id) {
         ws.current.onclose = (e) => {
             /** 웹소켓 종료 이후 서버로부터 전달받은 메시지 */
             if (e.code !== 1000 && !e.wasClean) {
+                /** 에러 정보 공유 */
+                console.log(e.code, e.reason)
                 /** 현재 웹소켓 세션을 제거. */
                 ws.current = null;
                 /** 새로운 웹소켓 생성 */
                 connectWebSocket();
             }
-            else { console.log(e.code, e.reason) }
-            console.log("웹소켓을 서버에서 지웠는가? " + e.wasClean)
+            console.log("끊긴 웹소켓 세션 삭제여부: " + e.wasClean)
         }
         /**
          * WebSocket close 와 onclose 의 차이와 사용법

@@ -10,8 +10,6 @@ export const convertOptionsIntoArray = (options) => {
         .filter(s => !isNaN(parseInt(s)))
         .map(s => parseInt(s));
 }
-
-
 /**
  * options 스트링을 option 가격으로 변환
  * @param {*} options 
@@ -23,9 +21,6 @@ export const convertOptionsIntoPrice = (options, commonTable) => {
     const defaultBag = 2019;
     // options 에 String => int 배열로 변환
     const tmp = convertOptionsIntoArray(options);
-    
-    console.log('option arr : ' + tmp);
-
     return tmp
         .reduce((acc, cur) => cur === defaultBag
             ? acc
@@ -33,7 +28,6 @@ export const convertOptionsIntoPrice = (options, commonTable) => {
             , 0
         );
 }
-
 /* 
     .reduce() 함수는 배열에 모든 요소를 더해 하나의 누적 값을 만든다.
     acc:누적 가격 

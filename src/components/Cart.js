@@ -18,26 +18,15 @@ export default function Cart(props) {
   const [sum, setSum] = useState(0)
   let ws = useSelector(state => state.ws)
 
-  /** 키오스크 정보 axios */
-  function getKiosk() {
-    axios.post("/api/kiosk/get", { id: id.kiosk }) // id = {kiosk: number}
-      .then(res => {
-        if (res.data.dto.power === "off") {
-          setIsInfo(true)
-        } else {
-          setIsInfo(false)
-        }
-      })
-      .catch(error => console.log(error))
-  }
-
   /** 컴포넌트 호출시 */
   useEffect(() => {
     /** WebSocket.js */
     kioskPower(ws, (result) => {
-      if (result.type === "SET_KIOSK") {
+      if (result.type === "SET_KIOSK" && result.power === "off") {
         console.log(result.power)
-       // getKiosk()
+        setIsInfo(true)
+      }else if(result.type === "SET_KIOSK" && result.power === "on"){
+        setIsInfo(false)
       }
     })
   }, [ws])
@@ -80,7 +69,6 @@ export default function Cart(props) {
   }
 
   useEffect(() => {
-
     let total = 0;
     for (let i = 0; i < orders.length; i++) {
       const optionPrice = convertOptionsIntoPrice(orders[i].options, commonTable);
@@ -88,7 +76,6 @@ export default function Cart(props) {
     }
     setSum(total);
   }, [orders])
-
   return (
     <>
       {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />}
