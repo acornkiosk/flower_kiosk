@@ -1,5 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css';
-import React from 'react';
+import React, { createRef } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
@@ -11,35 +11,37 @@ const initialstate = {
   commonTable: [],
   orders: [],
   kiosk: 0,
-  order_id: 0,
-  menu: []
+  order_id : 0,
+  menu: [],
+  ws: createRef()
 }
 const reducer = (state = initialstate, action) => {
   let newState
   if (action.type === "SET_KIOSK") {
     newState = {
-      ...state,
-      kiosk: action.payload
+      ...state
+      , kiosk: action.payload
+      , ws: action.payload.websocket // ws 객체를 설정
     }
   } else if (action.type === "UPDATE_COMMON") {
     newState = {
-      ...state,
-      commonTable: action.payload
+      ...state
+      , commonTable: action.payload
     }
   } else if (action.type === "UPDATE_ORDERS") {
     newState = {
-      ...state,
-      orders: action.payload
+      ...state
+      , orders: action.payload
     }
   } else if (action.type === "UPDATE_ORDER_ID") {
     newState = {
-      ...state,
-      order_id: action.payload
+      ...state
+      , order_id: action.payload
     }
   } else if (action.type === "GET_MENU") {
     newState = {
-      ...state,
-      menu: action.payload
+      ...state
+      , menu: action.payload
     }
   } else {
     newState = state

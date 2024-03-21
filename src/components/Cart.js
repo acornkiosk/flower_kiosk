@@ -1,22 +1,22 @@
 import axios from "axios"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
 import CartRow from "./CartRow"
 import InfoModal from "./InfoModal"
 import { convertOptionsIntoPrice } from "./util"
-import { SEND, WS } from "../websocket/WebSocket"
+import { send } from "../websocket/WebSocket"
 
 export default function Cart(props) {
   /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
-  const { setLogin, setCompleted } = props
+  const { setLogin, setCompleted, isInfo, setIsInfo } = props
   const orders = useSelector(state => state.orders)
   const id = useSelector(state => state.kiosk)
   const dispatch = useDispatch()
-  const [isInfo, setIsInfo] = useState(false);
+  // const [isInfo, setIsInfo] = useState(false);
   const commonTable = useSelector(state => state.commonTable)
   const [sum, setSum] = useState(0)
-  const ws = useRef(WS)
+  let ws = useSelector(state => state.ws)
 
   /** 키오스크 정보 axios */
   function getKiosk() {
@@ -31,28 +31,11 @@ export default function Cart(props) {
       .catch(error => console.log(error))
   }
 
-  /** 웹소켓 연결관리 함수 */
-  const connect = () => {
-    if (ws !== undefined) {
-      /** 사장님 페이지 키오스크 관리 */
-      ws.current.onmessage = (msg) => {
-        if (msg != null) {
-          var result = JSON.parse(msg.data);
-          if (result.type === "SET_KIOSK") {
-            setTimeout(() => {
-              getKiosk()
-            }, 500) // 이거 안하면 DB 최신화 했음에도 getKiosk() res.data 가 이전 값으로 들어옴
-            //getKiosk()
-          }
-        }
-      }
-    }
-  }
-
   /** 컴포넌트 호출시 */
   useEffect(() => {
-    connect()
-  }, [ws])
+    getKiosk()
+  }, [])
+
   const pay = () => {
     axios.get("/api/order/cartId")
       .then(res => {
@@ -68,8 +51,8 @@ export default function Cart(props) {
         updateDB(newList)
         /** 주문을 성공적으로 마쳤다는 사실을 고객님께 알리기  */
         setCompleted(true)
-        /** 주문정보 완전 업데이트 이후로 웹소켓 요청 */
-        SEND("ORDERS")
+        /** 웹소켓으로 접수신호 전달하기 */
+        send(ws)
       })
       .catch(error => console.log(error))
   }
@@ -101,7 +84,7 @@ export default function Cart(props) {
   }, [orders])
   return (
     <>
-      {isInfo && <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />}
+      <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />
       <Container className="border border-5 rounded " style={{ width: '100%', height: '100%', maxHeight: '400px' }}>
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>

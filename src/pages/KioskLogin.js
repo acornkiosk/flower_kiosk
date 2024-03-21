@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useState } from "react"
+import { useRef, useState } from "react"
 import { Alert, Button, Container, Image } from "react-bootstrap"
 import { useDispatch } from "react-redux"
 import Keypad from "../components/Keypad"
@@ -10,6 +10,8 @@ export default function KioskLogin(props) {
   const [showAlert, setShowAlert] = useState(false)
   const dispatch = useDispatch()
   const { setIsInfo, setLogin } = props
+  //웹소켓을 담을 변수 초기화s
+  let ws = useRef(null)
   //로그인 버튼을 누를시 실제 Db에 있는 값을 비교
   const login = () => {
     let id = parseInt(num)
@@ -19,23 +21,20 @@ export default function KioskLogin(props) {
           /** 전원 여부 확인하기 */
           let kiostPower = res.data.dto.power
           if (kiostPower === "off") {
-            console.log("반응함 off")
-            /** 웹소켓 close */
-            Connect({ power: false })
             /** 접근불가 모달 띄우기 */
             setIsInfo(true)
-            /** store 작업 */
-            dispatch({ type: "SET_KIOSK", payload: null })
           } else {
-            console.log("반응함 on")
             /** 웹소켓 open */
-            Connect({ power: true, id: res.data.dto.id })
+            Connect(ws, res.data.dto.id)
             /** 접근불가 모달 닫기 */
             setIsInfo(false)
             /** 로그인 성공신호 전달 */
             setLogin(true)
             /** store 작업 */
-            const data = { kiosk: res.data.dto.id }
+            const data = { 
+              kiosk:res.data.dto.id
+              , websocket: ws 
+            }
             dispatch({ type: "SET_KIOSK", payload: data })
           }
         } else {
