@@ -1,5 +1,6 @@
 
-export default function connect(ws, id) {
+/** 컴포넌트가 아니기에 useDispatch, useSelector, useRef, useEffect 모두 사용불가 */
+export default function Connect(ws, id) {
     /** localhost용 요청링크 */
     ws.current = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
     /** 실제서버용 요청링크 */
@@ -32,7 +33,6 @@ export default function connect(ws, id) {
      * 작성법 : WebSocket.close = () => { 명령할 함수 작성 }
      * 의미 : 종료될 경우 함수 실행
      */
-
 }
 function close(ws, msg) {
     /** undefined 에러 방지 */
@@ -51,16 +51,16 @@ function send(ws) {
         console.log("주문접수")
     }
 }
-let result
-function kioskPower(ws){
+function kioskPower(ws, callback){
     if(ws.current){
         ws.current.onmessage = (msg) => {
-            result = JSON.parse(msg.data);
+            let result = JSON.parse(msg.data);
+            callback(result)
         }
     }
 }
 // 반환할 값을 정의한다(변수명)
-export { send, close, kioskPower, result}
+export { send, close, kioskPower }
 
 /** 웹소켓 커넥트 상태메시지 */
 function socketState(msg) {

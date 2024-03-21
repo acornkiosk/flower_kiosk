@@ -3,14 +3,14 @@ import { useRef, useState } from "react"
 import { Alert, Button, Col, Container, Image, Row } from "react-bootstrap"
 import { BackspaceFill, DashSquare, Icon0Square, Icon1Square, Icon2Square, Icon3Square, Icon4Square, Icon5Square, Icon6Square, Icon7Square, Icon8Square, Icon9Square } from "react-bootstrap-icons"
 import { useDispatch } from "react-redux"
-import connect from "../websocket/WebSocket"
+import Connect from "../websocket/WebSocket"
 
 export default function KioskLogin(props) {
   const [num, setNum] = useState("")
   const [showAlert, setShowAlert] = useState(false)
   const dispatch = useDispatch()
   const { setIsInfo, setLogin } = props
-  //웹소켓을 담을 변수 초기화
+  //웹소켓을 담을 변수 초기화s
   let ws = useRef(null)
   //로그인 버튼을 누를시 실제 Db에 있는 값을 비교
   const login = () => {
@@ -25,7 +25,7 @@ export default function KioskLogin(props) {
             setIsInfo(true)
           } else {
             /** 웹소켓 open */
-            connect(ws, res.data.dto.id)
+            Connect(ws, res.data.dto.id)
             /** 접근불가 모달 닫기 */
             setIsInfo(false)
             /** 로그인 성공신호 전달 */

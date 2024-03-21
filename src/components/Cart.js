@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux"
 import CartRow from "./CartRow"
 import InfoModal from "./InfoModal"
 import { convertOptionsIntoPrice } from "./util"
-import { send, kioskPower, result } from "../websocket/WebSocket"
+import { send, kioskPower } from "../websocket/WebSocket"
 
 export default function Cart(props) {
   /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
@@ -19,24 +19,26 @@ export default function Cart(props) {
   let ws = useSelector(state => state.ws)
 
   /** 키오스크 정보 axios */
-  function getKiosk() {
-    axios.post("/api/kiosk/get", { id: id.kiosk }) // id = {kiosk: number}
-      .then(res => {
-        if (res.data.dto.power === "off") {
-          setIsInfo(true)
-        } else {
-          setIsInfo(false)
-        }
-      })
-      .catch(error => console.log(error))
-  }
+  // function getKiosk() {
+  //   axios.post("/api/kiosk/get", { id: id.kiosk }) // id = {kiosk: number}
+  //     .then(res => {
+  //       if (res.data.dto.power === "off") {
+  //         setIsInfo(true)
+  //       } else {
+  //         setIsInfo(false)
+  //       }
+  //     })
+  //     .catch(error => console.log(error))
+  // }
 
   /** 컴포넌트 호출시 */
   useEffect(() => {
     /** WebSocket.js */
-    kioskPower(ws)
-    /** json으로 받아온 값을 result로 넣고 확인 */
-    if(result != null && result.type === 'SET_KIOSK') {getKiosk();}
+    kioskPower(ws, (result) => {
+      if (result.type === "SET_KIOSK") {
+        console.log(result.type)
+      }
+    })
   }, [ws])
   const pay = () => {
     axios.get("/api/order/cartId")
