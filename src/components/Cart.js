@@ -18,6 +18,24 @@ export default function Cart(props) {
   const [sum, setSum] = useState(0)
   let ws = useSelector(state => state.ws)
 
+  /** 키오스크 정보 axios */
+  function getKiosk() {
+    axios.post("/api/kiosk/get", { id: id.kiosk }) // id = {kiosk: number}
+      .then(res => {
+        if (res.data.dto.power === "off") {
+          setIsInfo(true)
+        } else {
+          setIsInfo(false)
+        }
+      })
+      .catch(error => console.log(error))
+  }
+
+  /** 컴포넌트 호출시 */
+  useEffect(() => {
+    getKiosk()
+  }, [])
+
   const pay = () => {
     axios.get("/api/order/cartId")
       .then(res => {
