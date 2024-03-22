@@ -5,6 +5,7 @@ export default function Connect(ws, id) {
     function connectWebSocket() {
         /** localhost용 요청링크 */
         // ws.current = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
+
         /** 실제서버용 요청링크 */
         ws.current = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/kiosk/" + id)
 
