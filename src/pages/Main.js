@@ -1,3 +1,4 @@
+import { Container } from "react-bootstrap";
 import Cart from "../components/Cart";
 import HeaderImg from "../components/HeaderImg";
 import InfoModal from "../components/InfoModal";
@@ -25,11 +26,11 @@ export default function Main(props) {
     })
   }, [ws])
   return (
-    <div>
+    <Container>
       <HeaderImg/>
       <Menu/>
       <Cart setCompleted={setCompleted} setLogin={setLogin} isInfo={isInfo} setIsInfo={setIsInfo} />
       <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />
-    </div>
+    </Container>
   )
 }
