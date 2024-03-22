@@ -4,12 +4,14 @@ export default function Connect(ws, id) {
     /** 최초 연결 후 동작 */
     function connectWebSocket() {
         /** localhost용 요청링크 */
-        ws.current = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
+        // ws.current = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
         /** 실제서버용 요청링크 */
-        //WS = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/kiosk/" + id)
+        ws.current = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/kiosk/" + id)
 
         /** 최초 연결 후 동작 */
-        ws.current.onopen = () => { console.log(socketState(ws.current.readyState)) }
+        ws.current.onopen = () => { 
+            // console.log(socketState(ws.current.readyState)) 
+        }
         /** 연결 후 사용중에 에러! */
         ws.current.onerror = (e) => {
             console.log(e)

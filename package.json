@@ -21,7 +21,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "export PORT=3030 && react-scripts start",
+    "start": "set PORT=3030 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -44,6 +44,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:9000/flower",
-  "__proxy": "http://flower.onleave.co.kr:9000/flower"
+  "__proxy": "http://localhost:9000/flower",
+  "proxy": "http://flower.onleave.co.kr:9000/flower"
 }
