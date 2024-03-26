@@ -89,7 +89,6 @@ export default function Cart(props) {
         <Row>
           <Col md={8} className="border border-1 rounded mt-2 mb-2" style={{ overflow: 'auto', maxHeight: '350px' }}>
             {orders.map(item =>
-
               <div key={item.id}>
                 <CartRow item={item} />
               </div>

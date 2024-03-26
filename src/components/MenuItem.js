@@ -156,23 +156,23 @@ export default function MenuItem(props) {
   }
   return (
     <>
-      {menu.map(item => (
-        <Card style={{ fontFamily: "Chanssam", width: "20%" }} className="container me-3" key={item.id} onClick={() => openModal(item)}>
-          <div className="position-relative">
-            {item.is_sold === "true" &&
-              <div className="position-absolute">
-                <Card.Img variant="top" src="images/sold_out.png" style={{ width: "100%" }} className="mt-3" />
-              </div>
-            }
-            <Card.Img variant="top" src={item.img_name ? imgList[item.img_name] : "images/no_image.png"} style={{ width: "100%" }} className="mt-3" />
-          </div>
-          <Card.Body>
-            <Card.Title>{item.name}</Card.Title>
-            <Card.Text>{item.summary}</Card.Text>
-            <Card.Text>{item.price}원</Card.Text>
-          </Card.Body>
-        </Card>
-      ))}
+        {menu.map(item => (
+          <Card style={{ fontFamily: "Chanssam", width: "20%" }} className="ms-3 me-3" key={item.id} onClick={() => openModal(item)}>
+            <div className="position-relative">
+              {item.is_sold === "true" &&
+                <div className="position-absolute">
+                  <Card.Img variant="top" src="images/sold_out.png" style={{ width: "100%" }} className="mt-3" />
+                </div>
+              }
+              <Card.Img variant="top" src={item.img_name ? imgList[item.img_name] : "images/no_image.png"} style={{ width: "100%" }} className="mt-3" />
+            </div>
+            <Card.Body>
+              <Card.Title>{item.name}</Card.Title>
+              <Card.Text>{item.summary}</Card.Text>
+              <Card.Text>{item.price}원</Card.Text>
+            </Card.Body>
+          </Card>
+        ))}
       {/* 메뉴 상세 정보 modal */}
       <Modal
         size="lg"
@@ -251,11 +251,12 @@ export default function MenuItem(props) {
               ))}
             </Row>
           </Row>
-          <div style={{ 
-                          padding : "30px",
-                          border : "1px solid #FFFFFF",
-                          borderRadius : "5px",
-                          backgroundColor : "#FFFFFF" }}>
+          <div style={{
+            padding: "30px",
+            border: "1px solid #FFFFFF",
+            borderRadius: "5px",
+            backgroundColor: "#FFFFFF"
+          }}>
 
           </div>
           <Row>
@@ -282,11 +283,12 @@ export default function MenuItem(props) {
               ))}
             </Row>
           </Row>
-          <div style={{ 
-                          padding : "30px",
-                          border : "1px solid #FFFFFF",
-                          borderRadius : "5px",
-                          backgroundColor : "#FFFFFF" }}>
+          <div style={{
+            padding: "30px",
+            border: "1px solid #FFFFFF",
+            borderRadius: "5px",
+            backgroundColor: "#FFFFFF"
+          }}>
 
           </div>
           <Row className="mt-3">

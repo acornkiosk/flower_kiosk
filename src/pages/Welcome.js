@@ -8,7 +8,7 @@ export default function Welcome(props) {
             <Container className="text-center" onClick={() => {
                 setWelcome(true)
             }}>
-                <Image src="/images/cover.png" class="img-fluid" />
+                <Image src="/images/cover.png" className="img-fluid" />
             </Container>
         </>
     )

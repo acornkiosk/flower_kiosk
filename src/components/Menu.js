@@ -44,7 +44,7 @@ export default function Menu() {
     <div style={{ fontFamily: "Chanssam" }}>
       <Tabs defaultActiveKey="All" className="nav nav-actives mb-3" style={{fontSize: "25px", backgroundColor:"#FFFFCC"}} fill>
         <Tab eventKey="All" title="All">
-          <div className="album py-5 ">
+          <div className="album py-5">
             <Container>
               <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <MenuItem id={id} setId={setId} menu={menu} />
