@@ -87,6 +87,9 @@
 | 2024.02.28 | 사이드바 기능 완료|
 | 2024.03.03 | 키오스크 메인 화면 레포 이전|
 | 2024.03.08 | 요구사항 수정|
+| 2024.03.13 | [ 프로젝트 화면계획서 V0.8 작성](https://drive.google.com/drive/folders/19cVOkx5jpWMl9KqFia3Dd_BrflqpRaVl)|
+| 2024.03.14 | [ 프로젝트 화면계획서 V0.9 작성](https://drive.google.com/drive/folders/19cVOkx5jpWMl9KqFia3Dd_BrflqpRaVl)|
+| 2024.03.26 | [ 프로젝트 화면계획서 V0.10 작성](https://drive.google.com/drive/folders/19cVOkx5jpWMl9KqFia3Dd_BrflqpRaVl)|
 
 
 ## Contents
