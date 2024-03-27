@@ -7,10 +7,8 @@ export default function Keypad(props) {
       newNum = props.num.slice(0, -1)
     } else {
       if (props.num.length > 4) return
-
       newNum = props.num + item
     }
-
     props.setNum(newNum)
   }
   return (

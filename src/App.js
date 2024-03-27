@@ -30,7 +30,6 @@ function App() {
   return (
     <div>
       {!isLogin && <KioskLogin setLogin={setLogin} setIsInfo={setIsInfo} />}
-      {/** 다른 컴포넌트에서 로그아웃한 이력을 가져오기 위해 isLogin과 setLogin을 넣음 */}
       <InfoModal show={isInfo} setIsInfo={setIsInfo} setLogin={setLogin} />
       {isLogin && !isWelcome && <Welcome setWelcome={setWelcome} />}
       {isLogin && !isCompleted && isWelcome && <Main isLogin={isLogin} setLogin={setLogin} setCompleted={setCompleted} />}

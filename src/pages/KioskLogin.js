@@ -31,9 +31,9 @@ export default function KioskLogin(props) {
             /** 로그인 성공신호 전달 */
             setLogin(true)
             /** store 작업 */
-            const data = { 
-              kiosk:res.data.dto.id
-              , websocket: ws 
+            const data = {
+              kiosk: res.data.dto.id
+              , websocket: ws
             }
             dispatch({ type: "SET_KIOSK", payload: data })
           }

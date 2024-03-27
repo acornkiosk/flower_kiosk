@@ -1,21 +1,14 @@
-
-/** 컴포넌트가 아니기에 useDispatch, useSelector, useRef, useEffect 모두 사용불가 */
 export default function Connect(ws, id) {
     /** 최초 연결 후 동작 */
     function connectWebSocket() {
-        /** localhost용 요청링크 */
-        // ws.current = new WebSocket("ws://localhost:9000/flower/ws/kiosk/" + id)
-
         /** 실제서버용 요청링크 */
         ws.current = new WebSocket("ws://flower.onleave.co.kr:9000/flower/ws/kiosk/" + id)
-
         /** 최초 연결 후 동작 */
-        ws.current.onopen = () => { 
-            // console.log(socketState(ws.current.readyState)) 
+        ws.current.onopen = () => {
+            console.log(socketState(ws.current.readyState))
         }
         /** 연결 후 사용중에 에러! */
         ws.current.onerror = (e) => {
-            console.log(e)
             console.log(socketState(ws.current.readyState))
         }
         /** 닫힌 이후의 로직 */
@@ -31,20 +24,6 @@ export default function Connect(ws, id) {
             }
             console.log("끊긴 웹소켓 세션 삭제여부: " + e.wasClean)
         }
-        /**
-         * WebSocket close 와 onclose 의 차이와 사용법
-         * 
-         * code : 커넥션을 닫을 때 사용하는 특수 코드
-         * reason : 커넥션 닫기 사유를 설명하는 문자열
-         *
-         * close 
-         * 작성법 : WebSocket.close(code, reason);
-         * 의미 : 사유를 지정하여 직접 웹소켓 종료시키기
-         * 
-         * onclose
-         * 작성법 : WebSocket.close = () => { 명령할 함수 작성 }
-         * 의미 : 종료될 경우 함수 실행
-         */
     }
     /** 최초 웹소켓 연결 함수 호출 */
     connectWebSocket();
@@ -54,11 +33,6 @@ function close(ws, msg) {
     if (ws.current) {
         ws.current.close(1000, msg)
         console.log(socketState(ws.current.readyState))
-        /*
-         * WebSocket.close(code, reason);
-         * code : 커넥션을 닫을 때 사용하는 특수 코드
-         * reason : 커넥션 닫기 사유를 설명하는 문자열
-         */
     }
 }
 function send(ws) {
@@ -79,11 +53,9 @@ function kioskPower(ws, callback) {
     }
 }
 // 반환할 값을 정의한다(변수명)
-export { send, close, kioskPower }
-
+export { close, kioskPower, send }
 /** 웹소켓 커넥트 상태메시지 */
 function socketState(msg) {
-    // eslint-disable-next-line default-case
     switch (msg) {
         case 0: {
             return "'CONNECTING': 손님 키오스크 웹소켓 연결시도"

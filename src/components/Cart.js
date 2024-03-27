@@ -2,23 +2,20 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Button, Col, Container, Row } from "react-bootstrap"
 import { useDispatch, useSelector } from "react-redux"
+import { send } from "../websocket/WebSocket"
 import CartRow from "./CartRow"
 import InfoModal from "./InfoModal"
 import { convertOptionsIntoPrice } from "./util"
-import { send } from "../websocket/WebSocket"
 
 export default function Cart(props) {
-  /** InfoModal.js로 로그아웃한 이력을 가져가기 위함 */
   const { setLogin, setCompleted, isInfo, setIsInfo } = props
   const orders = useSelector(state => state.orders)
   const id = useSelector(state => state.kiosk)
   const dispatch = useDispatch()
-  // const [isInfo, setIsInfo] = useState(false);
   const commonTable = useSelector(state => state.commonTable)
   const [sum, setSum] = useState(0)
   let ws = useSelector(state => state.ws)
 
-  /** 키오스크 정보 axios */
   function getKiosk() {
     axios.post("/api/kiosk/get", { id: id.kiosk }) // id = {kiosk: number}
       .then(res => {
@@ -60,9 +57,7 @@ export default function Cart(props) {
     list.forEach(item => {
       item.kiosk_id = id.kiosk // id = {kiosk: number} : 사장님 주문관리 페이지 오류 원인
       axios.post("/api/order", item)
-        .then(res => {
-          console.log("주문하기 결과 : " + res.data.status)
-        })
+        .then(res => {})
         .catch(erorr => console.log(erorr))
     })
   }
@@ -73,7 +68,6 @@ export default function Cart(props) {
       payload: []
     })
   }
-
   useEffect(() => {
     let total = 0;
     for (let i = 0; i < orders.length; i++) {

@@ -1,4 +1,4 @@
-import {  useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button, Col, Row } from "react-bootstrap"
 import { DashSquare, PlusSquare, XSquareFill } from "react-bootstrap-icons"
 import { useDispatch, useSelector } from "react-redux"
@@ -53,7 +53,7 @@ export default function CartRow(props) {
     list.forEach(option => {
       commonTable.forEach(common => {
         if (parseInt(option) === common.code_id) {
-          if(parseInt(defaultBag) !== common.code_id){
+          if (parseInt(defaultBag) !== common.code_id) {
             result += "+" + common.code_name
           }
           price += parseInt(common.code_value)

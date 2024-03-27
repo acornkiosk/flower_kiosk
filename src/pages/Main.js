@@ -8,8 +8,6 @@ import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 
 export default function Main(props) {
-  /** App.js <--> Main.js <--> Cart.js */
-  /** App.js <--> Main.js <--> InfoModal.js */
   const {setCompleted, setLogin} = props
   const [isInfo, setIsInfo] = useState(false);
   const id = useSelector(state => state.kiosk); // id = {kiosk: number}
@@ -17,7 +15,6 @@ export default function Main(props) {
 
   /** 컴포넌트 호출시 */
   useEffect(() => {
-    /** WebSocket.js */
     kioskPower(ws, (result) => {
       if (result.type === "SET_KIOSK" && result.power === "off" && result.kioskID === id.kiosk) {
         setIsInfo(true)
